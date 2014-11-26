@@ -2,18 +2,20 @@ package com.sxs.styd.stbook;
 
 import java.util.ArrayList;
 
-import com.lidroid.xutils.ViewUtils;
-import com.lidroid.xutils.view.annotation.ViewInject;
-import com.sxs.styd.stbook.base.IActivity;
-import com.sxs.styd.stbook.vo.BookVO;
-
-import android.os.Bundle;
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.GridView;
+
+import com.lidroid.xutils.ViewUtils;
+import com.lidroid.xutils.view.annotation.ViewInject;
+import com.sxs.styd.stbook.adapter.BookGridViewAdapter;
+import com.sxs.styd.stbook.base.IActivity;
+import com.sxs.styd.stbook.util.AlertDialogs;
+import com.sxs.styd.stbook.vo.BookVO;
 
 public class MainActivity extends Activity implements IActivity{
 
@@ -22,6 +24,8 @@ public class MainActivity extends Activity implements IActivity{
 	
 	
 	private ArrayList<BookVO> bookDataList = null;
+	private BookGridViewAdapter grid_adapter;
+	private int delete_post;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +38,10 @@ public class MainActivity extends Activity implements IActivity{
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				
-				return false;
+					delete_post = position;
+				    new AlertDialogs(MainActivity.this,MainActivity.this)
+				   .alertDialog("确定删除吗？", "", "删除", "取消", "delete");
+				return true;
 			}
 		});
 	}
@@ -49,6 +55,9 @@ public class MainActivity extends Activity implements IActivity{
 			item.author = "路人甲";
 			bookDataList.add(item);
 		}
+		grid_adapter = new BookGridViewAdapter(this);
+		grid_adapter.setListData(bookDataList);
+		book_grid.setAdapter(grid_adapter);
 		
 	}
 	/**
@@ -56,7 +65,12 @@ public class MainActivity extends Activity implements IActivity{
 	 */
 	@Override
 	public void update(){
-		
+		if(delete_post >= 0){
+			bookDataList.remove(delete_post);
+			delete_post = 0;
+			grid_adapter.setListData(bookDataList);
+			grid_adapter.notifyDataSetChanged();
+		}
 	}
 	
 	@Override

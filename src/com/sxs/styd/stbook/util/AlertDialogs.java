@@ -13,6 +13,7 @@ import com.sxs.styd.stbook.R;
 import com.sxs.styd.stbook.base.AppManager;
 import com.sxs.styd.stbook.base.BaseActivity;
 import com.sxs.styd.stbook.base.IActivity;
+import com.sxs.styd.stbook.config.Constants;
 
 
 public class AlertDialogs {
@@ -47,8 +48,8 @@ public class AlertDialogs {
 		aDialog = new AlertDialog.Builder(context).create();
 		aDialog.show();
 		WindowManager.LayoutParams params = aDialog.getWindow().getAttributes();
-		params.width =(int) (MyTool.getWidth()*0.6);
-		params.height = (int) (MyTool.getHight()*0.2);
+		params.width =(int) (Constants.SCREEN_WIDTH*0.6);
+		params.height = (int) (Constants.SCREEN_HEIGHT*0.2);
 		aDialog.getWindow().setAttributes(params);
 		aDialog.getWindow().setContentView(view);
 		noButton.setTag(tag);

@@ -18,7 +18,9 @@ public final class R {
     public static final class attr {
     }
     public static final class color {
+        public static final int back_color=0x7f050004;
         public static final int bg_color=0x7f050002;
+        public static final int gv_title_color=0x7f050003;
         public static final int topbar_center_color=0x7f050000;
         public static final int topbar_edge_color=0x7f050001;
     }
@@ -32,6 +34,7 @@ public final class R {
         public static final int activity_horizontal_margin=0x7f060000;
         public static final int activity_vertical_margin=0x7f060001;
         public static final int back_text_size=0x7f060003;
+        public static final int small_text_size=0x7f060004;
         public static final int title_text_size=0x7f060002;
     }
     public static final class drawable {
@@ -41,33 +44,38 @@ public final class R {
         public static final int app_home_title_r_button_selector=0x7f020003;
         public static final int back_left=0x7f020004;
         public static final int ic_launcher=0x7f020005;
-        public static final int shelves_editbook=0x7f020006;
-        public static final int shelves_editbook_d=0x7f020007;
-        public static final int splash_bg=0x7f020008;
-        public static final int splash_loading_bg=0x7f020009;
-        public static final int splash_loading_item=0x7f02000a;
-        public static final int splash_logo=0x7f02000b;
-        public static final int topbar_bg=0x7f02000c;
-        public static final int topbar_right_btn=0x7f02000d;
+        public static final int shelf_default_cover=0x7f020006;
+        public static final int shelves_editbook=0x7f020007;
+        public static final int shelves_editbook_d=0x7f020008;
+        public static final int splash_bg=0x7f020009;
+        public static final int splash_loading_bg=0x7f02000a;
+        public static final int splash_loading_item=0x7f02000b;
+        public static final int splash_logo=0x7f02000c;
+        public static final int topbar_bg=0x7f02000d;
+        public static final int topbar_right_btn=0x7f02000e;
     }
     public static final class id {
-        public static final int action_settings=0x7f0a000a;
+        public static final int action_settings=0x7f0a000d;
         public static final int book_grid=0x7f0a0001;
+        public static final int book_name_image=0x7f0a0009;
+        public static final int book_name_text=0x7f0a000a;
         public static final int dialog_content=0x7f0a0005;
         public static final int dialog_title=0x7f0a0004;
+        public static final int image=0x7f0a0008;
         public static final int left_btn=0x7f0a0006;
         public static final int right_btn=0x7f0a0007;
         public static final int splash_loading_item=0x7f0a0003;
         public static final int splash_logo=0x7f0a0002;
-        public static final int topBar_title=0x7f0a0008;
+        public static final int topBar_title=0x7f0a000b;
         public static final int top_bar=0x7f0a0000;
-        public static final int top_right_button=0x7f0a0009;
+        public static final int top_right_button=0x7f0a000c;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
         public static final int activity_splash=0x7f030001;
         public static final int alert_dialog_layout=0x7f030002;
-        public static final int top_actionbar_layout=0x7f030003;
+        public static final int book_gridview_item=0x7f030003;
+        public static final int top_actionbar_layout=0x7f030004;
     }
     public static final class menu {
         public static final int main=0x7f090000;
