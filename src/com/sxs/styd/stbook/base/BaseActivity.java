@@ -41,6 +41,7 @@ public class BaseActivity extends Activity {
 	protected void onStop() {
 		super.onStop();
 	}
+	
 	/**
 	 * 通过类名启动Activity
 	 * 

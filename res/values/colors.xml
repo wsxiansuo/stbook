@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="topbar_center_color">#ff1a76c6</color>
+    <color name="topbar_edge_color">#fffefefe</color>
+    
+    <color name="bg_color">#efefef</color>
+</resources>
