@@ -16,6 +16,90 @@ public final class R {
         public static final int splash_loading=0x7f040004;
     }
     public static final class attr {
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int icon=0x7f010001;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int left_btn_selector=0x7f01000b;
+        /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int left_btn_title=0x7f010009;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int right_btn_selector=0x7f01000a;
+        /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int right_btn_title=0x7f010007;
+        /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int right_title=0x7f010004;
+        /** <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int selectedIndex=0x7f010005;
+        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int show_left_btn=0x7f010008;
+        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int show_right_btn=0x7f010006;
+        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int show_sub_title=0x7f010003;
+        /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int sub_title=0x7f010002;
+        /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int title=0x7f010000;
     }
     public static final class color {
         public static final int back_color=0x7f050004;
@@ -43,39 +127,50 @@ public final class R {
         public static final int android_title_r_button_pressed=0x7f020002;
         public static final int app_home_title_r_button_selector=0x7f020003;
         public static final int back_left=0x7f020004;
-        public static final int ic_launcher=0x7f020005;
-        public static final int shelf_default_cover=0x7f020006;
-        public static final int shelves_editbook=0x7f020007;
-        public static final int shelves_editbook_d=0x7f020008;
-        public static final int splash_bg=0x7f020009;
-        public static final int splash_loading_bg=0x7f02000a;
-        public static final int splash_loading_item=0x7f02000b;
-        public static final int splash_logo=0x7f02000c;
-        public static final int topbar_bg=0x7f02000d;
-        public static final int topbar_right_btn=0x7f02000e;
+        public static final int btn_topbar_back=0x7f020005;
+        public static final int folder=0x7f020006;
+        public static final int ic_launcher=0x7f020007;
+        public static final int jiantou_right=0x7f020008;
+        public static final int menu_back=0x7f020009;
+        public static final int menu_back_selected=0x7f02000a;
+        public static final int menu_search=0x7f02000b;
+        public static final int menu_search_selected=0x7f02000c;
+        public static final int shelf_default_cover=0x7f02000d;
+        public static final int shelves_editbook=0x7f02000e;
+        public static final int shelves_editbook_d=0x7f02000f;
+        public static final int splash_bg=0x7f020010;
+        public static final int splash_loading_bg=0x7f020011;
+        public static final int splash_loading_item=0x7f020012;
+        public static final int splash_logo=0x7f020013;
+        public static final int topbar_bg=0x7f020014;
+        public static final int topbar_right_btn=0x7f020015;
     }
     public static final class id {
-        public static final int action_settings=0x7f0a000d;
-        public static final int book_grid=0x7f0a0001;
-        public static final int book_name_image=0x7f0a0009;
-        public static final int book_name_text=0x7f0a000a;
-        public static final int dialog_content=0x7f0a0005;
-        public static final int dialog_title=0x7f0a0004;
-        public static final int image=0x7f0a0008;
-        public static final int left_btn=0x7f0a0006;
-        public static final int right_btn=0x7f0a0007;
-        public static final int splash_loading_item=0x7f0a0003;
-        public static final int splash_logo=0x7f0a0002;
-        public static final int topBar_title=0x7f0a000b;
-        public static final int top_bar=0x7f0a0000;
-        public static final int top_right_button=0x7f0a000c;
+        public static final int actionBar_ab=0x7f0a0001;
+        public static final int action_settings=0x7f0a0010;
+        public static final int book_grid=0x7f0a0002;
+        public static final int book_name_image=0x7f0a000b;
+        public static final int book_name_text=0x7f0a000c;
+        public static final int dialog_content=0x7f0a0007;
+        public static final int dialog_title=0x7f0a0006;
+        public static final int image=0x7f0a000a;
+        public static final int left_btn=0x7f0a0008;
+        public static final int mpath=0x7f0a0000;
+        public static final int nodata_tip_tv=0x7f0a0003;
+        public static final int right_btn=0x7f0a0009;
+        public static final int splash_loading_item=0x7f0a0005;
+        public static final int splash_logo=0x7f0a0004;
+        public static final int topBar_left_button=0x7f0a000d;
+        public static final int topBar_right_button=0x7f0a000f;
+        public static final int topBar_title=0x7f0a000e;
     }
     public static final class layout {
-        public static final int activity_main=0x7f030000;
-        public static final int activity_splash=0x7f030001;
-        public static final int alert_dialog_layout=0x7f030002;
-        public static final int book_gridview_item=0x7f030003;
-        public static final int top_actionbar_layout=0x7f030004;
+        public static final int activity_file=0x7f030000;
+        public static final int activity_main=0x7f030001;
+        public static final int activity_splash=0x7f030002;
+        public static final int alert_dialog_layout=0x7f030003;
+        public static final int book_gridview_item=0x7f030004;
+        public static final int top_actionbar_layout=0x7f030005;
     }
     public static final class menu {
         public static final int main=0x7f090000;
@@ -114,4 +209,199 @@ public final class R {
         public static final int AppTheme=0x7f080002;
         public static final int SplashTheme=0x7f080001;
     }
+    public static final class styleable {
+        /** Attributes that can be used with a common_attrs.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #common_attrs_icon com.sxs.styd.stbook:icon}</code></td><td></td></tr>
+           <tr><td><code>{@link #common_attrs_left_btn_selector com.sxs.styd.stbook:left_btn_selector}</code></td><td></td></tr>
+           <tr><td><code>{@link #common_attrs_left_btn_title com.sxs.styd.stbook:left_btn_title}</code></td><td></td></tr>
+           <tr><td><code>{@link #common_attrs_right_btn_selector com.sxs.styd.stbook:right_btn_selector}</code></td><td></td></tr>
+           <tr><td><code>{@link #common_attrs_right_btn_title com.sxs.styd.stbook:right_btn_title}</code></td><td></td></tr>
+           <tr><td><code>{@link #common_attrs_right_title com.sxs.styd.stbook:right_title}</code></td><td></td></tr>
+           <tr><td><code>{@link #common_attrs_selectedIndex com.sxs.styd.stbook:selectedIndex}</code></td><td></td></tr>
+           <tr><td><code>{@link #common_attrs_show_left_btn com.sxs.styd.stbook:show_left_btn}</code></td><td></td></tr>
+           <tr><td><code>{@link #common_attrs_show_right_btn com.sxs.styd.stbook:show_right_btn}</code></td><td></td></tr>
+           <tr><td><code>{@link #common_attrs_show_sub_title com.sxs.styd.stbook:show_sub_title}</code></td><td></td></tr>
+           <tr><td><code>{@link #common_attrs_sub_title com.sxs.styd.stbook:sub_title}</code></td><td></td></tr>
+           <tr><td><code>{@link #common_attrs_title com.sxs.styd.stbook:title}</code></td><td></td></tr>
+           </table>
+           @see #common_attrs_icon
+           @see #common_attrs_left_btn_selector
+           @see #common_attrs_left_btn_title
+           @see #common_attrs_right_btn_selector
+           @see #common_attrs_right_btn_title
+           @see #common_attrs_right_title
+           @see #common_attrs_selectedIndex
+           @see #common_attrs_show_left_btn
+           @see #common_attrs_show_right_btn
+           @see #common_attrs_show_sub_title
+           @see #common_attrs_sub_title
+           @see #common_attrs_title
+         */
+        public static final int[] common_attrs = {
+            0x7f010000, 0x7f010001, 0x7f010002, 0x7f010003,
+            0x7f010004, 0x7f010005, 0x7f010006, 0x7f010007,
+            0x7f010008, 0x7f010009, 0x7f01000a, 0x7f01000b
+        };
+        /**
+          <p>This symbol is the offset where the {@link com.sxs.styd.stbook.R.attr#icon}
+          attribute's value can be found in the {@link #common_attrs} array.
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          @attr name android:icon
+        */
+        public static final int common_attrs_icon = 1;
+        /**
+          <p>This symbol is the offset where the {@link com.sxs.styd.stbook.R.attr#left_btn_selector}
+          attribute's value can be found in the {@link #common_attrs} array.
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          @attr name android:left_btn_selector
+        */
+        public static final int common_attrs_left_btn_selector = 11;
+        /**
+          <p>This symbol is the offset where the {@link com.sxs.styd.stbook.R.attr#left_btn_title}
+          attribute's value can be found in the {@link #common_attrs} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:left_btn_title
+        */
+        public static final int common_attrs_left_btn_title = 9;
+        /**
+          <p>This symbol is the offset where the {@link com.sxs.styd.stbook.R.attr#right_btn_selector}
+          attribute's value can be found in the {@link #common_attrs} array.
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          @attr name android:right_btn_selector
+        */
+        public static final int common_attrs_right_btn_selector = 10;
+        /**
+          <p>This symbol is the offset where the {@link com.sxs.styd.stbook.R.attr#right_btn_title}
+          attribute's value can be found in the {@link #common_attrs} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:right_btn_title
+        */
+        public static final int common_attrs_right_btn_title = 7;
+        /**
+          <p>This symbol is the offset where the {@link com.sxs.styd.stbook.R.attr#right_title}
+          attribute's value can be found in the {@link #common_attrs} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:right_title
+        */
+        public static final int common_attrs_right_title = 4;
+        /**
+          <p>This symbol is the offset where the {@link com.sxs.styd.stbook.R.attr#selectedIndex}
+          attribute's value can be found in the {@link #common_attrs} array.
+
+
+          <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:selectedIndex
+        */
+        public static final int common_attrs_selectedIndex = 5;
+        /**
+          <p>This symbol is the offset where the {@link com.sxs.styd.stbook.R.attr#show_left_btn}
+          attribute's value can be found in the {@link #common_attrs} array.
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:show_left_btn
+        */
+        public static final int common_attrs_show_left_btn = 8;
+        /**
+          <p>This symbol is the offset where the {@link com.sxs.styd.stbook.R.attr#show_right_btn}
+          attribute's value can be found in the {@link #common_attrs} array.
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:show_right_btn
+        */
+        public static final int common_attrs_show_right_btn = 6;
+        /**
+          <p>This symbol is the offset where the {@link com.sxs.styd.stbook.R.attr#show_sub_title}
+          attribute's value can be found in the {@link #common_attrs} array.
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:show_sub_title
+        */
+        public static final int common_attrs_show_sub_title = 3;
+        /**
+          <p>This symbol is the offset where the {@link com.sxs.styd.stbook.R.attr#sub_title}
+          attribute's value can be found in the {@link #common_attrs} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:sub_title
+        */
+        public static final int common_attrs_sub_title = 2;
+        /**
+          <p>This symbol is the offset where the {@link com.sxs.styd.stbook.R.attr#title}
+          attribute's value can be found in the {@link #common_attrs} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:title
+        */
+        public static final int common_attrs_title = 0;
+    };
 }

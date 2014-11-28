@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.sxs.styd.stbook"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_color"
     >
-	<include android:id="@+id/top_bar" 
-	    layout="@layout/top_actionbar_layout"/>
-    
+        <com.sxs.styd.stbook.base.BaseActionBar
+            android:id="@+id/actionBar_ab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="@string/app_name"
+            app:show_left_btn="false"
+            />
 	<GridView
 	    android:id="@+id/book_grid"
 	    android:layout_margin="8dp"
 	    android:gravity="center"
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
-	    android:layout_below="@id/top_bar"
+	    android:layout_below="@id/actionBar_ab"
 	    android:cacheColorHint="#00000000"
 	    android:columnWidth="90.0dp"
 	    android:fadingEdge="none"
@@ -22,5 +27,13 @@
 	    android:numColumns="3"
 	    android:scrollbars="vertical"
 	    android:verticalSpacing="20dp" />
+	<TextView android:id="@+id/nodata_tip_tv"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="暂无书籍,点我加载本地电子书"
+	    android:textColor="@color/topbar_center_color"
+	    android:textSize="@dimen/title_text_size"
+	    android:layout_centerInParent="true"
+	    android:visibility="gone"/>
 
 </RelativeLayout>

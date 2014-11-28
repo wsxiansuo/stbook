@@ -14,10 +14,10 @@ public class BookDB extends SQLiteOpenHelper{
     private static final String DATABASE_NAME = "stbook.db";
     private static int DATABASE_VERSION = 1;
     
-    public static String ID = "id";
+    public static String ID = "_id";
     public static String LAST_TIME = "lastTime";
     //book±í¸ñ
-    public static String TABLE_BOOK = "table_book";
+    public static String TABLE_BOOK = "table_books";
     public static String PARENT = "parent";
     public static String PATH = "path";
     public static String NAME = "name";
@@ -40,14 +40,14 @@ public class BookDB extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-      	String sqlBook = "CREATE TABLE IF¡¡NOT EXISTS " + TABLE_BOOK + 
-      	    " ( "+ ID + " integer primary key autoincrement, " + PARENT + 
+      	String sqlBook = "CREATE TABLE " + TABLE_BOOK + 
+      	    "( "+ ID + " integer primary key autoincrement, " + PARENT + 
       	    " varchar(200), " + PATH + " varchar(200), " + NAME + 
       	    " varchar(200), " + LAST_POSTION + " float, " + LAST_TIME + " double)";
-      	String sqlMark = "CREATE TABLE IF NOT EXISIS " + TABLE_MARK + 
-      	    " (" + ID + " integer primary key autoincrement, " + BOOK_ID + 
-      	    " integer," + POSTION + " float, " + LAST_TIME + " double)";
-      	db.execSQL(sqlBook);  
+      	String sqlMark = "CREATE TABLE " + TABLE_MARK + 
+      	    "(" + ID + " integer primary key autoincrement, " + BOOK_ID + 
+      	    " integer," + POSTION + " text, " + LAST_TIME + " text)";
+      	db.execSQL(sqlBook);
       	db.execSQL(sqlMark);
     }
 

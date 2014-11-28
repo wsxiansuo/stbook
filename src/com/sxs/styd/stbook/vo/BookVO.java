@@ -5,10 +5,10 @@ package com.sxs.styd.stbook.vo;
  *
  */
 public class BookVO {
-    public String id;
+    public int id;
     public String name;
     public String parent;
     public String path;
-    public int lastPostion; 
+    public float lastPostion; 
     public long lastTime;
 }

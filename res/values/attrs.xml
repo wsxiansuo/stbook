@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="common_attrs">
+        <attr name="title" format="string"  /> 
+        <attr name="icon" format="reference"  /> 
+        <attr name="sub_title" format="string"  />
+        <attr name="show_sub_title" format="boolean"  />
+        <attr name="right_title" format="string"  />
+        <attr name="selectedIndex" format="integer"/> 
+        <attr name="show_right_btn" format="boolean"  />
+        <attr name="right_btn_title" format="string"  />
+        <attr name="show_left_btn" format="boolean"  />
+        <attr name="left_btn_title" format="string"  />
+        <attr name="right_btn_selector" format="reference"  />
+        <attr name="left_btn_selector" format="reference"  />
+    </declare-styleable>
+	
+</resources>

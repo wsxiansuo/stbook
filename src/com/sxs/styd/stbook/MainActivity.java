@@ -2,18 +2,22 @@ package com.sxs.styd.stbook;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
+import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.sxs.styd.stbook.adapter.BookGridViewAdapter;
+import com.sxs.styd.stbook.base.BaseActivity;
 import com.sxs.styd.stbook.base.IActivity;
+import com.sxs.styd.stbook.data.DBManager;
 import com.sxs.styd.stbook.util.AlertDialogs;
 import com.sxs.styd.stbook.vo.BookVO;
 
@@ -21,10 +25,11 @@ import com.sxs.styd.stbook.vo.BookVO;
  * MainActivity
  * @author xssong
  */
-public class MainActivity extends Activity implements IActivity{
+public class MainActivity extends BaseActivity implements IActivity{
     public static final int    COUNT = 20;
     public static final String TAG = MainActivity.class.getSimpleName();
-    @ViewInject(R.id.book_grid)  		GridView  bookGrid;
+    @ViewInject(R.id.book_grid)       GridView  bookGrid;
+    @ViewInject(R.id.nodata_tip_tv)   TextView  noDataTipTV;
     private ArrayList<BookVO> bookDataList = null;
     private BookGridViewAdapter gridAdapter;
     private int deletePost;
@@ -53,16 +58,24 @@ public class MainActivity extends Activity implements IActivity{
      * 初始化数据
      */
     private void initData(){
-        bookDataList = new ArrayList<BookVO>();
-        for (int i = 0; i < COUNT; i++){
-            BookVO item = new BookVO();
-            item.id = i + "";
-            item.name = "测试呢吗" + i;
-            bookDataList.add(item);
+        bookDataList = DBManager.getInstance().getBookList();
+        if (bookDataList != null && bookDataList.size() == 0){
+            bookGrid.setVisibility(View.INVISIBLE);
+            noDataTipTV.setVisibility(View.VISIBLE);
+        } else {
+            gridAdapter = new BookGridViewAdapter(this);
+            gridAdapter.setListData(bookDataList);
+            bookGrid.setAdapter(gridAdapter);
         }
-        gridAdapter = new BookGridViewAdapter(this);
-        gridAdapter.setListData(bookDataList);
-        bookGrid.setAdapter(gridAdapter);
+    }
+    /**.
+     * dianji
+     * @param v view
+     */
+    @OnClick(R.id.nodata_tip_tv)
+    public void onTVClick(View v){
+        openActivity(FileHandlerActivity.class);
+        Log.i("aaa", "tiao zhuan");
     }
 	/**.
 	 * 回调更新页面
