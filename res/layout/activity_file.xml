@@ -1,12 +1,52 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?><LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.sxs.styd.stbook"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bg_color"
     android:orientation="vertical" >
-    
-        <TextView android:textAppearance="?android:attr/textAppearanceLarge"  
-	        android:layout_width="wrap_content" android:id="@+id/mpath"  
-	        android:layout_height="wrap_content" android:text="TextView"></TextView>  
-        <ListView android:id="@android:id/list" android:layout_height="wrap_content"  
-                android:layout_width="match_parent"></ListView>  
+         <com.sxs.styd.stbook.base.BaseActionBar
+	         android:id="@+id/actionBar_ab"
+	         android:layout_width="match_parent"
+	         android:layout_height="wrap_content"
+	         app:title="@string/local_title"
+	         />
+        <TextView android:id="@+id/show_path_tv"
+                  android:layout_width="match_parent"
+                  android:layout_height="30dp"
+                  android:textColor="@color/white_color"
+                  android:textSize="14sp"
+                  android:paddingLeft="5dp"
+                  android:background="#359fe8"/>
+        <RelativeLayout android:id="@+id/show_back_rl"
+                  android:layout_width="match_parent"
+                  android:layout_height="44dp"
+                  android:layout_gravity="center_vertical"
+                  android:visibility="gone"
+                  android:background="@drawable/file_list_item_bg">
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/gray_color"
+                android:textSize="@dimen/normal_text_size"
+                android:text="@string/last_step"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:paddingTop="5dp"/>
+            <ImageView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/menu_back_selected"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:paddingTop="5dp"/>
+             <View android:layout_width="match_parent"
+                 android:layout_height="1dp"
+                 android:layout_alignParentBottom="true"
+                 android:background="@color/border_color"/>
+        </RelativeLayout>
+        <ListView android:id="@+id/file_list_lv" 
+                android:layout_height="wrap_content"  
+                android:layout_width="match_parent"
+                android:divider="@color/border_color"
+                android:dividerHeight="1dp" 
+                ></ListView>
 </LinearLayout>

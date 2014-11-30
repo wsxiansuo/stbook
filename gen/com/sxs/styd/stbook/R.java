@@ -104,9 +104,13 @@ containing a value of this type.
     public static final class color {
         public static final int back_color=0x7f050004;
         public static final int bg_color=0x7f050002;
+        public static final int border_color=0x7f050006;
+        public static final int gray_color=0x7f050007;
         public static final int gv_title_color=0x7f050003;
+        public static final int item_down=0x7f050008;
         public static final int topbar_center_color=0x7f050000;
         public static final int topbar_edge_color=0x7f050001;
+        public static final int white_color=0x7f050005;
     }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
@@ -118,7 +122,8 @@ containing a value of this type.
         public static final int activity_horizontal_margin=0x7f060000;
         public static final int activity_vertical_margin=0x7f060001;
         public static final int back_text_size=0x7f060003;
-        public static final int small_text_size=0x7f060004;
+        public static final int normal_text_size=0x7f060004;
+        public static final int small_text_size=0x7f060005;
         public static final int title_text_size=0x7f060002;
     }
     public static final class drawable {
@@ -128,41 +133,55 @@ containing a value of this type.
         public static final int app_home_title_r_button_selector=0x7f020003;
         public static final int back_left=0x7f020004;
         public static final int btn_topbar_back=0x7f020005;
-        public static final int folder=0x7f020006;
-        public static final int ic_launcher=0x7f020007;
-        public static final int jiantou_right=0x7f020008;
-        public static final int menu_back=0x7f020009;
-        public static final int menu_back_selected=0x7f02000a;
-        public static final int menu_search=0x7f02000b;
-        public static final int menu_search_selected=0x7f02000c;
-        public static final int shelf_default_cover=0x7f02000d;
-        public static final int shelves_editbook=0x7f02000e;
-        public static final int shelves_editbook_d=0x7f02000f;
-        public static final int splash_bg=0x7f020010;
-        public static final int splash_loading_bg=0x7f020011;
-        public static final int splash_loading_item=0x7f020012;
-        public static final int splash_logo=0x7f020013;
-        public static final int topbar_bg=0x7f020014;
-        public static final int topbar_right_btn=0x7f020015;
+        public static final int check_nol=0x7f020006;
+        public static final int check_sel=0x7f020007;
+        public static final int file_list_item_bg=0x7f020008;
+        public static final int file_list_item_color_down=0x7f020009;
+        public static final int file_list_item_color_up=0x7f02000a;
+        public static final int folder=0x7f02000b;
+        public static final int ic_launcher=0x7f02000c;
+        public static final int jiantou_right=0x7f02000d;
+        public static final int menu_back=0x7f02000e;
+        public static final int menu_back_selected=0x7f02000f;
+        public static final int menu_search=0x7f020010;
+        public static final int menu_search_selected=0x7f020011;
+        public static final int shelf_default_cover=0x7f020012;
+        public static final int shelves_editbook=0x7f020013;
+        public static final int shelves_editbook_d=0x7f020014;
+        public static final int splash_bg=0x7f020015;
+        public static final int splash_loading_bg=0x7f020016;
+        public static final int splash_loading_item=0x7f020017;
+        public static final int splash_logo=0x7f020018;
+        public static final int topbar_bg=0x7f020019;
+        public static final int topbar_right_btn=0x7f02001a;
+        public static final int txt_icon=0x7f02001b;
     }
     public static final class id {
-        public static final int actionBar_ab=0x7f0a0001;
-        public static final int action_settings=0x7f0a0010;
-        public static final int book_grid=0x7f0a0002;
-        public static final int book_name_image=0x7f0a000b;
-        public static final int book_name_text=0x7f0a000c;
-        public static final int dialog_content=0x7f0a0007;
-        public static final int dialog_title=0x7f0a0006;
-        public static final int image=0x7f0a000a;
-        public static final int left_btn=0x7f0a0008;
-        public static final int mpath=0x7f0a0000;
-        public static final int nodata_tip_tv=0x7f0a0003;
-        public static final int right_btn=0x7f0a0009;
-        public static final int splash_loading_item=0x7f0a0005;
-        public static final int splash_logo=0x7f0a0004;
-        public static final int topBar_left_button=0x7f0a000d;
-        public static final int topBar_right_button=0x7f0a000f;
-        public static final int topBar_title=0x7f0a000e;
+        public static final int actionBar_ab=0x7f0a0000;
+        public static final int action_settings=0x7f0a0018;
+        public static final int book_grid=0x7f0a0004;
+        public static final int book_name_image=0x7f0a000d;
+        public static final int book_name_text=0x7f0a000e;
+        public static final int dialog_content=0x7f0a0009;
+        public static final int dialog_title=0x7f0a0008;
+        public static final int file_count_tv=0x7f0a0014;
+        public static final int file_icon_iv=0x7f0a000f;
+        public static final int file_list_lv=0x7f0a0003;
+        public static final int file_name_tv=0x7f0a0013;
+        public static final int file_view_ll=0x7f0a0012;
+        public static final int image=0x7f0a000c;
+        public static final int left_btn=0x7f0a000a;
+        public static final int nodata_tip_tv=0x7f0a0005;
+        public static final int right_btn=0x7f0a000b;
+        public static final int right_icon_iv=0x7f0a0011;
+        public static final int right_import_tv=0x7f0a0010;
+        public static final int show_back_rl=0x7f0a0002;
+        public static final int show_path_tv=0x7f0a0001;
+        public static final int splash_loading_item=0x7f0a0007;
+        public static final int splash_logo=0x7f0a0006;
+        public static final int topBar_left_button=0x7f0a0015;
+        public static final int topBar_right_button=0x7f0a0017;
+        public static final int topBar_title=0x7f0a0016;
     }
     public static final class layout {
         public static final int activity_file=0x7f030000;
@@ -170,15 +189,18 @@ containing a value of this type.
         public static final int activity_splash=0x7f030002;
         public static final int alert_dialog_layout=0x7f030003;
         public static final int book_gridview_item=0x7f030004;
-        public static final int top_actionbar_layout=0x7f030005;
+        public static final int file_item_layout=0x7f030005;
+        public static final int top_actionbar_layout=0x7f030006;
     }
     public static final class menu {
         public static final int main=0x7f090000;
     }
     public static final class string {
-        public static final int action_settings=0x7f070001;
+        public static final int action_settings=0x7f070002;
         public static final int app_name=0x7f070000;
-        public static final int hello_world=0x7f070002;
+        public static final int hello_world=0x7f070003;
+        public static final int last_step=0x7f070004;
+        public static final int local_title=0x7f070001;
     }
     public static final class style {
         /** 
@@ -254,7 +276,7 @@ containing a value of this type.
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name android:icon
+          @attr name com.sxs.styd.stbook:icon
         */
         public static final int common_attrs_icon = 1;
         /**
@@ -264,7 +286,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name android:left_btn_selector
+          @attr name com.sxs.styd.stbook:left_btn_selector
         */
         public static final int common_attrs_left_btn_selector = 11;
         /**
@@ -278,7 +300,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:left_btn_title
+          @attr name com.sxs.styd.stbook:left_btn_title
         */
         public static final int common_attrs_left_btn_title = 9;
         /**
@@ -288,7 +310,7 @@ containing a value of this type.
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name android:right_btn_selector
+          @attr name com.sxs.styd.stbook:right_btn_selector
         */
         public static final int common_attrs_right_btn_selector = 10;
         /**
@@ -302,7 +324,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:right_btn_title
+          @attr name com.sxs.styd.stbook:right_btn_title
         */
         public static final int common_attrs_right_btn_title = 7;
         /**
@@ -316,7 +338,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:right_title
+          @attr name com.sxs.styd.stbook:right_title
         */
         public static final int common_attrs_right_title = 4;
         /**
@@ -330,7 +352,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:selectedIndex
+          @attr name com.sxs.styd.stbook:selectedIndex
         */
         public static final int common_attrs_selectedIndex = 5;
         /**
@@ -344,7 +366,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:show_left_btn
+          @attr name com.sxs.styd.stbook:show_left_btn
         */
         public static final int common_attrs_show_left_btn = 8;
         /**
@@ -358,7 +380,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:show_right_btn
+          @attr name com.sxs.styd.stbook:show_right_btn
         */
         public static final int common_attrs_show_right_btn = 6;
         /**
@@ -372,7 +394,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:show_sub_title
+          @attr name com.sxs.styd.stbook:show_sub_title
         */
         public static final int common_attrs_show_sub_title = 3;
         /**
@@ -386,7 +408,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:sub_title
+          @attr name com.sxs.styd.stbook:sub_title
         */
         public static final int common_attrs_sub_title = 2;
         /**
@@ -400,7 +422,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:title
+          @attr name com.sxs.styd.stbook:title
         */
         public static final int common_attrs_title = 0;
     };

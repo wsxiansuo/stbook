@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp" 
+    android:layout_gravity="center_vertical"
+    android:background="@drawable/file_list_item_bg"
+    >
+    <ImageView android:id="@+id/file_icon_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/folder"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="10dp"/>
+    <TextView android:id="@+id/right_import_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:textColor="@color/gray_color"
+        android:textSize="@dimen/normal_text_size"
+        android:layout_marginRight="10dp"
+        android:visibility="gone"/>
+    <ImageView android:id="@+id/right_icon_iv"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:src="@drawable/jiantou_right"
+	    android:layout_alignParentRight="true"
+	    android:layout_centerVertical="true"
+	    android:layout_marginRight="10dp"
+	    />
+    <LinearLayout android:id="@+id/file_view_ll"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_toLeftOf="@id/right_icon_iv"
+        android:layout_toRightOf="@id/file_icon_iv"
+        android:orientation="vertical"
+        android:gravity="center|center_horizontal|center_vertical"
+        >
+            <TextView android:id="@+id/file_name_tv"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:textColor="@color/back_color"
+	        android:textSize="@dimen/normal_text_size"
+	        />
+	    <TextView android:id="@+id/file_count_tv"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:textColor="@color/gray_color"
+	        android:textSize="@dimen/small_text_size"
+	        android:visibility="gone"
+	        />
+    </LinearLayout>
+</RelativeLayout>

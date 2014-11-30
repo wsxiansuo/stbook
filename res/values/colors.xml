@@ -6,4 +6,11 @@
     <color name="bg_color">#efefef</color>
     <color name="gv_title_color">#787878</color>
     <color name="back_color">#000000</color>
+    <color name="white_color">#ffffff</color>
+    <color name="border_color">#e7e7e7</color>
+    <color name="gray_color">#505050</color>
+    
+    
+    
+    <color name="item_down">#88acde</color>
 </resources>

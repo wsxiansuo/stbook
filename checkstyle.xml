@@ -77,8 +77,8 @@
     </module>
     <module name="CyclomaticComplexity">
       <property name="severity" value="warning"/>
-      <property name="max" value="5"/>
-      <message key="cyclomaticComplexity" value="方法内嵌套不能超过5级。"/>
+      <property name="max" value="8"/>
+      <message key="cyclomaticComplexity" value="方法内嵌套不能超过8级。"/>
     </module>
     <module name="BooleanExpressionComplexity">
       <property name="severity" value="warning"/>
