@@ -54,7 +54,7 @@ public class DBManager {
         Cursor c = db.rawQuery("SELECT * FROM " + BookDB.TABLE_BOOK + " ORDER BY "+BookDB.LAST_TIME+" DESC", null);  
         while (c.moveToNext()) {
             BookVO map = new BookVO();  
-            map.id = c.getInt(c.getColumnIndex(BookDB.ID)); 
+            map.id = c.getString(c.getColumnIndex(BookDB.ID)); 
             map.name = c.getString(c.getColumnIndex(BookDB.NAME)); 
             map.path = c.getString(c.getColumnIndex(BookDB.PATH)); 
             map.parent = c.getString(c.getColumnIndex(BookDB.PARENT));
@@ -93,7 +93,7 @@ public class DBManager {
      * @param lastPostion 图书的最新进度
      * @param lastTime  图书的最新操作时间
      */
-    public void insertBookById(String name, String path, String parent, String lastPostion, String lastTime){
+    public void insertBookToDB(String name, String path, String parent, String lastPostion, String lastTime){
         ContentValues cv = new ContentValues();
         cv.put(BookDB.NAME, name);
         cv.put(BookDB.PATH, path);

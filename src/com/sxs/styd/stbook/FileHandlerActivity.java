@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -20,7 +21,9 @@ import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.sxs.styd.stbook.adapter.FileListAdapter;
 import com.sxs.styd.stbook.base.BaseActivity;
+import com.sxs.styd.stbook.data.DBManager;
 import com.sxs.styd.stbook.util.MapUtil;
+import com.sxs.styd.stbook.vo.BookVO;
 /**.
  * 本地文件目录文件读写
  * @author user
@@ -32,10 +35,25 @@ public class FileHandlerActivity extends BaseActivity {
     private String       rootPath = "/"; //起始目录
     private String       lastPath = "";
     private FileListAdapter   adapter;
-    
+    private int selectCount = 0;
+    private ArrayList<Map<String, String>> selectList = null;
+    /**.
+     * 设置选择
+     * @param selectCount 数量
+     */
+    public void setSelectCount(int selectCount) {
+        this.selectCount = selectCount;
+        if (selectCount > 0){
+            insertBtn.setEnabled(true);
+        } else {
+            insertBtn.setEnabled(false);
+        }
+    }
+
     @ViewInject(R.id.file_list_lv) private ListView  list;
     @ViewInject(R.id.show_path_tv) private TextView  showPathTV;
     @ViewInject(R.id.show_back_rl) private RelativeLayout   showBackTV;
+    @ViewInject(R.id.insert_to_sql_btn) private Button   insertBtn;
     /* (non-Javadoc)
      * @see android.app.Activity#onCreate(android.os.Bundle)
      */
@@ -52,9 +70,10 @@ public class FileHandlerActivity extends BaseActivity {
      * @param filePath 文件路径
      */
     private void getFileDir(String filePath){
+        setSelectCount(0);
         showPathTV.setText("路径：" + filePath);
         listData = new ArrayList<Map<String, String>>(); 
-        
+        selectList = new ArrayList<Map<String, String>>();
         File f = new File(filePath);
         File[] files = f.listFiles();
         if (!filePath.equals(rootPath)){
@@ -112,22 +131,28 @@ public class FileHandlerActivity extends BaseActivity {
             if (FileListAdapter.MAP_FILE_TXT_YES_CHECK.equals(txtState)){
                 map.put(FileListAdapter.MAP_FILE_STATE, FileListAdapter.MAP_FILE_TXT_NO_CHECK);
                 img.setImageResource(R.drawable.check_nol);
+                setSelectCount(selectCount - 1);
+                selectList.remove(map);
             } else if (FileListAdapter.MAP_FILE_TXT_NO_CHECK.equals(txtState)){
                 map.put(FileListAdapter.MAP_FILE_STATE, FileListAdapter.MAP_FILE_TXT_YES_CHECK);
                 img.setImageResource(R.drawable.check_sel);
+                setSelectCount(selectCount + 1);
+                selectList.add(map);
             } else if (FileListAdapter.MAP_FILE_TXT_IMPORT.equals(txtState)){
                 return;
-            }
-            File file = new File(path);
-            if (file.canRead()){
-                if (file.isDirectory()){
-                    getFileDir(path); //如果是文件夹再进去读取
-                } else {
-                    showAlertDialog("Message", "["+file.getName()+"] is File!");
-                }
             } else {
-                showAlertDialog("Message", "权限不足！"); 
+                File file = new File(path);
+                if (file.canRead()){
+                    if (file.isDirectory()){
+                        getFileDir(path); //如果是文件夹再进去读取
+                    } else {
+                        showAlertDialog("Message", "["+file.getName()+"] is File!");
+                    }
+                } else {
+                    showAlertDialog("Message", "权限不足！"); 
+                }
             }
+            
         }
     };
     /**.
@@ -138,7 +163,41 @@ public class FileHandlerActivity extends BaseActivity {
     public void backClick(View v){
         getFileDir(lastPath);
     }
-
+    /**.
+     * 导入数据
+     * @param v view
+     */
+    @OnClick(R.id.insert_to_sql_btn)
+    public void insertBtnClick(View v){
+        if (selectList != null && selectList.size() > 0){
+            ArrayList<BookVO> bookList = DBManager.getInstance().getBookList();
+            for (int i = 0; i < selectList.size(); i++){
+                Map<String, String> map = selectList.get(i);
+                String name = MapUtil.getString(map, FileListAdapter.MAP_NAME);
+                boolean isExist = getDataExist(bookList, name);
+                if (!isExist){
+                    DBManager.getInstance().insertBookToDB(name.substring(0, name.length() - STR_LEN), 
+                        FileListAdapter.MAP_PATH, "", "0", System.currentTimeMillis()+"");
+                }
+            }
+        }
+    }
+    /**.
+     * 判断重复处理
+     * @param bookList 书列表
+     * @param name 名称
+     * @return bool
+     */
+    private boolean getDataExist(ArrayList<BookVO> bookList, String name){
+        if (bookList != null && bookList.size() > 0){
+            for (int j = 0; j < bookList.size(); j++){
+                if (name.equals(bookList.get(j).name)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     /**.
      * 弹出提示窗
      * @param title 标题

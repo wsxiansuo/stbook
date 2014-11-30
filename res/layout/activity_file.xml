@@ -1,9 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?><LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res/com.sxs.styd.stbook"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_color"
-    android:orientation="vertical" >
+    >
          <com.sxs.styd.stbook.base.BaseActionBar
 	         android:id="@+id/actionBar_ab"
 	         android:layout_width="match_parent"
@@ -16,13 +17,15 @@
                   android:textColor="@color/white_color"
                   android:textSize="14sp"
                   android:paddingLeft="5dp"
-                  android:background="#359fe8"/>
+                  android:background="#359fe8"
+                  android:layout_below="@id/actionBar_ab"/>
         <RelativeLayout android:id="@+id/show_back_rl"
                   android:layout_width="match_parent"
                   android:layout_height="44dp"
                   android:layout_gravity="center_vertical"
                   android:visibility="gone"
-                  android:background="@drawable/file_list_item_bg">
+                  android:background="@drawable/file_list_item_bg"
+                  android:layout_below="@id/show_path_tv">
             <TextView android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/gray_color"
@@ -43,10 +46,18 @@
                  android:layout_alignParentBottom="true"
                  android:background="@color/border_color"/>
         </RelativeLayout>
+        <Button android:id="@+id/insert_to_sql_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:text="导入"/>
         <ListView android:id="@+id/file_list_lv" 
                 android:layout_height="wrap_content"  
                 android:layout_width="match_parent"
                 android:divider="@color/border_color"
                 android:dividerHeight="1dp" 
+                android:layout_below="@id/show_back_rl"
+                android:layout_above="@id/insert_to_sql_btn"
                 ></ListView>
-</LinearLayout>
+        
+</RelativeLayout>

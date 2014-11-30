@@ -2,6 +2,7 @@ package com.sxs.styd.stbook;
 
 import java.util.ArrayList;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -43,15 +44,14 @@ public class MainActivity extends BaseActivity implements IActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ViewUtils.inject(this);
-        initData();
+//        initData();
         bookGrid.setOnItemLongClickListener(new OnItemLongClickListener() {
-        
-                @Override
-                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                    deletePost = position;
-                    new AlertDialogs(MainActivity.this, MainActivity.this).alertDialog("确定删除吗？", "", "删除", "取消", "delete");
-                    return true;
-                }
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                deletePost = position;
+                new AlertDialogs(MainActivity.this, MainActivity.this).alertDialog("确定删除吗？", "", "删除", "取消", "delete");
+                return true;
+            }
         });
     }
     /**.
@@ -63,6 +63,8 @@ public class MainActivity extends BaseActivity implements IActivity{
             bookGrid.setVisibility(View.INVISIBLE);
             noDataTipTV.setVisibility(View.VISIBLE);
         } else {
+            bookGrid.setVisibility(View.VISIBLE);
+            noDataTipTV.setVisibility(View.GONE);
             gridAdapter = new BookGridViewAdapter(this);
             gridAdapter.setListData(bookDataList);
             bookGrid.setAdapter(gridAdapter);
@@ -83,13 +85,26 @@ public class MainActivity extends BaseActivity implements IActivity{
     @Override
     public void update(){
         if (deletePost >= 0){
+            DBManager.getInstance().deleteBookById(bookDataList.get(deletePost).id);
             bookDataList.remove(deletePost);
             deletePost = 0;
             gridAdapter.setListData(bookDataList);
             gridAdapter.notifyDataSetChanged();
+            if (bookDataList.size() == 0){
+                bookGrid.setVisibility(View.INVISIBLE);
+                noDataTipTV.setVisibility(View.VISIBLE);
+            }
         }
     }
-	
+    /**.
+     * 处理回调的时候刷数据
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initData();
+    }
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
     	// Inflate the menu; this adds items to the action bar if it is present.

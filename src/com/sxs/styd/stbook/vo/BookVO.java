@@ -5,7 +5,7 @@ package com.sxs.styd.stbook.vo;
  *
  */
 public class BookVO {
-    public int id;
+    public String id;
     public String name;
     public String parent;
     public String path;
