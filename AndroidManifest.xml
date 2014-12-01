@@ -30,6 +30,7 @@
         </activity>
         <activity android:name=".MainActivity"></activity>
         <activity android:name=".FileHandlerActivity"></activity>
+        <activity android:name=".BookReadActivity"></activity>
     </application>
 
 </manifest>

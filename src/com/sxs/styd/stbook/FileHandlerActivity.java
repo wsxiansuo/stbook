@@ -63,7 +63,6 @@ public class FileHandlerActivity extends BaseActivity {
         setContentView(R.layout.activity_file);
         ViewUtils.inject(this);
         getFileDir(rootPath);
-      
     }
     /**.
      * 取得文件架构的method
@@ -204,10 +203,7 @@ public class FileHandlerActivity extends BaseActivity {
      * @param message 内容
      */
     private void showAlertDialog(String title, String message){
-        new AlertDialog.Builder(this)
-        .setTitle(title)
-        .setMessage(message)
-        .setPositiveButton("OK", onclickListener).show();
+        new AlertDialog.Builder(this).setTitle(title).setMessage(message).setPositiveButton("OK", onclickListener).show();
     }
     private DialogInterface.OnClickListener onclickListener = new DialogInterface.OnClickListener() {
       

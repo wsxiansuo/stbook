@@ -7,14 +7,11 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.sxs.styd.stbook.R;
-import com.sxs.styd.stbook.config.Constants;
 import com.sxs.styd.stbook.util.MapUtil;
 
 /**.

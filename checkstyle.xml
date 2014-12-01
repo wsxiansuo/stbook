@@ -282,10 +282,11 @@
       <message key="multiple.variable.declarations.comma" value="每一行申请一个变量"/>
       <message key="multiple.variable.declarations" value="每一行允许定义一个变量"/>
     </module>
+    <!-- 讨论下 要不要去掉 
     <module name="AvoidInlineConditionals">
       <property name="severity" value="warning"/>
       <message key="inline.conditional.avoid" value="避免在此处嵌入条件"/>
-    </module>
+    </module>-->
  
  
  
@@ -327,8 +328,9 @@
  <!--检查Javadoc的格式-->
     <module name="JavadocStyle">
       <property name="severity" value="warning"/>
+      <property name="checkFirstSentence" value="false"/>   
       <property name="tokens" value="CLASS_DEF,CTOR_DEF,INTERFACE_DEF,METHOD_DEF,VARIABLE_DEF"/>
-      <!--<message key="javadoc.noperiod" value="第一句话应该以.?!结束."/>-->
+      <message key="javadoc.noperiod" value="第一句话应该以.?!结束."/>
       <message key="javadoc.missing" value="缺少Javadoc注释."/>
       <message key="javadoc.unclosedhtml" value="HTML 标签: {0}未结束"/>
     </module>
@@ -340,11 +342,14 @@
     <module name="ConstantName">
       <property name="severity" value="warning"/>
     </module>
-  <!--检查消除代码中的幻数-->
+  <!--检查消除代码中的直接数
     <module name="MagicNumber">
       <property name="severity" value="warning"/>
-    </module>
- <!--对修饰符出现的顺序进行检查-->
+    </module>-->
+  <!-- if最多嵌套3层-->
+    <module name="NestedIfDepth">
+        <property name="max" value="3"/>
+    </module>   
     <module name="ModifierOrder">
       <property name="severity" value="warning"/>
       <message key="mod.order" value="''{0}'' 修饰符顺序颠倒 ."/>

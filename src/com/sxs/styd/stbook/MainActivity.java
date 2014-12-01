@@ -1,5 +1,6 @@
 package com.sxs.styd.stbook;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import android.content.Intent;
@@ -22,7 +23,7 @@ import com.sxs.styd.stbook.data.DBManager;
 import com.sxs.styd.stbook.util.AlertDialogs;
 import com.sxs.styd.stbook.vo.BookVO;
 
-/**.
+/**
  * MainActivity
  * @author xssong
  */
@@ -51,6 +52,25 @@ public class MainActivity extends BaseActivity implements IActivity{
                 deletePost = position;
                 new AlertDialogs(MainActivity.this, MainActivity.this).alertDialog("确定删除吗？", "", "删除", "取消", "delete");
                 return true;
+            }
+        });
+        bookGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                BookVO item = bookDataList.get(position);
+                if (item != null){
+                    File file = new File(item.path);
+                    if (file.length() == 0){
+                        showToast("该文件为空文件");
+                    } else {
+                        DBManager.getInstance().updateBookById(item.id, item.lastPostion + "", System.currentTimeMillis() + "");
+                        Bundle bd = new Bundle();
+                        bd.putSerializable("itemVO", item);
+                        openActivity(BookReadActivity.class, bd);
+//                        openActivity(pClass, pBundle)
+//                        itemVO = (ProductItemVO)intent.getExtras().getSerializable("item");
+                    }
+                }
             }
         });
     }
