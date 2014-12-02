@@ -176,7 +176,7 @@ public class FileHandlerActivity extends BaseActivity {
                 boolean isExist = getDataExist(bookList, name);
                 if (!isExist){
                     DBManager.getInstance().insertBookToDB(name.substring(0, name.length() - STR_LEN), 
-                        FileListAdapter.MAP_PATH, "", "0", System.currentTimeMillis()+"");
+                        MapUtil.getString(map, FileListAdapter.MAP_PATH), "", "0", System.currentTimeMillis()+"");
                 }
             }
         }
