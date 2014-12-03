@@ -58,7 +58,7 @@ public class DBManager {
             map.name = c.getString(c.getColumnIndex(BookDB.NAME)); 
             map.path = c.getString(c.getColumnIndex(BookDB.PATH)); 
             map.parent = c.getString(c.getColumnIndex(BookDB.PARENT));
-            map.lastPostion = c.getFloat(c.getColumnIndex(BookDB.LAST_POSTION));
+            map.lastPostion = c.getInt(c.getColumnIndex(BookDB.LAST_POSTION));
             map.lastTime = c.getLong(c.getColumnIndex(BookDB.LAST_TIME));
             listData.add(map);  
         }  

@@ -14,6 +14,6 @@ public class BookVO implements Serializable {
     public String name;
     public String parent;
     public String path;
-    public float lastPostion; 
+    public int lastPostion; 
     public long lastTime;
 }

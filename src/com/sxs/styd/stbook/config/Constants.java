@@ -13,5 +13,7 @@ public class Constants {
     
     // ÆÁÄ»ÃÜ¶È
     public static float SCREEN_DENSITY;
+    
+    public static final String CONFIG = "CONFIG";
 	
 }
