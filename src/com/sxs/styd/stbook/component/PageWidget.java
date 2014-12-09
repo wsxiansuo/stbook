@@ -41,8 +41,11 @@ public class PageWidget extends View {
     /**
      * @param rightToLeft the rightToLeft to set
      */
-    public void setRightToLeft(boolean rightToLeft) {
-        this.rightToLeft = rightToLeft;
+    public void setRightToLeft(float x) {
+        this.rightToLeft = x > lastTouchX;
+    }
+    public boolean getRightToLeft(){
+        return rightToLeft;
     }
 
     /**
@@ -63,12 +66,6 @@ public class PageWidget extends View {
             0.55f, 0, 80.0f, 0, 0, 0, 0.2f, 0 };
         ColorMatrix cm = new ColorMatrix();
         cm.set(array);
-        /*
-         * |A*0.55 + 80|
-         * |R*0.55 + 80|
-         * |G*0.55 + 80|
-         * |B*0.2|
-         */
 //      cm.setSaturation(0);
         mColorMatrixFilter = new ColorMatrixColorFilter(cm);
         //利用滚动条来实现接触点放开后的动画效果
@@ -81,9 +78,6 @@ public class PageWidget extends View {
             touchPt.x = mScroller.getCurrX();
             touchPt.y = mScroller.getCurrY();
             postInvalidate();
-        } else {
-//            touchPt.x = -1;
-//            touchPt.y = -1;            
         }
         super.computeScroll();
     }
@@ -151,17 +145,13 @@ public class PageWidget extends View {
         drawForceImage(canvas);
         Paint mPaint = new Paint();
         if (touchPt.x!=-1 && touchPt.y!=-1) {
-            //翻页左侧书边
-            canvas.drawLine(touchPt.x, 0, touchPt.x, screenHeight, mPaint);
-            //左侧书边画阴影
-            shadowDrawableRL.setBounds((int)touchPt.x - 40, 0 , (int)touchPt.x, screenHeight);
-            shadowDrawableRL.draw(canvas);
             //翻页对折处
-            float halfCut = touchPt.x + (rightToLeft ? (screenWidth - touchPt.x) : touchPt.x)/2;
-            Log.i("hck", "touchPt.x:" + touchPt.x + " -- halfCut -- :" + halfCut);
+            float halfCut = rightToLeft ? (touchPt.x + (screenWidth - touchPt.x)/2) : touchPt.x / 2;
             canvas.drawLine(halfCut, 0, halfCut, screenHeight, mPaint);
+            
             //对折处左侧画翻页页图片背面
-            Rect backArea = new Rect((int)touchPt.x, 0, (int)halfCut, screenHeight);
+            Rect backArea = new Rect(rightToLeft ? (int)touchPt.x : (int)halfCut, 
+                0, rightToLeft ? (int)halfCut : (int)touchPt.x , screenHeight);
             Paint backPaint = new Paint();
             backPaint.setColor(0xffdacab0);
             canvas.drawRect(backArea, backPaint);
@@ -172,28 +162,60 @@ public class PageWidget extends View {
             Matrix matrix = new Matrix();
 
             matrix.preScale(-1, 1);
-            matrix.postTranslate(foreImage.getWidth() + touchPt.x, 0);
+            matrix.postTranslate(rightToLeft?(foreImage.getWidth() + touchPt.x):touchPt.x, 0);
 
             canvas.save();
             canvas.clipRect(backArea);
             canvas.drawBitmap(foreImage, matrix, fbPaint);
             canvas.restore();
-
-            //对折处画左侧阴影
-            shadowDrawableRL.setBounds((int)halfCut - 50, 0, (int)halfCut, screenHeight);
-            shadowDrawableRL.draw(canvas);
-
-            Path bgPath = new Path();
-
-            //可以显示背景图的区域
-            bgPath.addRect(new RectF(halfCut, 0, screenWidth, screenHeight), Direction.CW);
-
-            //对折出右侧画背景
-            drawBgImage(canvas, bgPath);
-
-            //对折处画右侧阴影
-            shadowDrawableLR.setBounds((int)halfCut, 0, (int)halfCut + 50, screenHeight);
-            shadowDrawableLR.draw(canvas);
+            if (rightToLeft){
+                drawRightToLeftEffect(canvas, mPaint, halfCut);
+            } else {
+                drawLeftToRightEffect(canvas, mPaint, halfCut);
+            }
+        }
+    }
+    
+    public void drawLeftToRightEffect(Canvas canvas, Paint mPaint, float halfCut){
+        //翻页左侧书边
+        canvas.drawLine(touchPt.x, 0, touchPt.x, screenHeight, mPaint);
+        //左侧书边画阴影
+        shadowDrawableLR.setBounds((int)touchPt.x, 0, (int)touchPt.x + 40, screenHeight);
+        shadowDrawableLR.draw(canvas);
+        Path bgPath = new Path();
+        //可以显示背景图的区域
+        bgPath.addRect(new RectF(0, 0, halfCut, screenHeight), Direction.CW);
+        //对折出右侧画背景
+        drawBgImage(canvas, bgPath);
+        //对折处画左侧阴影
+        shadowDrawableRL.setBounds((int)halfCut - 50, 0, (int)halfCut, screenHeight);
+        shadowDrawableRL.draw(canvas);
+        //对折处画右侧阴影
+        shadowDrawableLR.setBounds((int)halfCut, 0, (int)halfCut + 50, screenHeight);
+        shadowDrawableLR.draw(canvas);
+    }
+    public void drawRightToLeftEffect(Canvas canvas, Paint mPaint, float halfCut){
+        //翻页左侧书边
+        canvas.drawLine(touchPt.x, 0, touchPt.x, screenHeight, mPaint);
+        //左侧书边画阴影
+        shadowDrawableRL.setBounds((int)touchPt.x - 40, 0, (int)touchPt.x, screenHeight);
+        shadowDrawableRL.draw(canvas);
+        //对折处画左侧阴影
+        shadowDrawableRL.setBounds((int)halfCut - 50, 0, (int)halfCut, screenHeight);
+        shadowDrawableRL.draw(canvas);
+        Path bgPath = new Path();
+        //可以显示背景图的区域
+        bgPath.addRect(new RectF(halfCut, 0, screenWidth, screenHeight), Direction.CW);
+        //对折出右侧画背景
+        drawBgImage(canvas, bgPath);
+        //对折处画右侧阴影
+        shadowDrawableLR.setBounds((int)halfCut, 0, (int)halfCut + 50, screenHeight);
+        shadowDrawableLR.draw(canvas);
+    }
+    
+    public void abortAnimation() {
+        if (!mScroller.isFinished()) {
+            mScroller.abortAnimation();
         }
     }
     /**
@@ -215,7 +237,7 @@ public class PageWidget extends View {
             int dy = 0;
             //向右滑动
             if (lastTouchX < touchPt.x) {
-                dx = foreImage.getWidth() - (int)touchPt.x + 30;
+                dx = foreImage.getWidth() + screenWidth;
             } else { 
             //向左滑动
                 dx = -(int)touchPt.x - foreImage.getWidth();

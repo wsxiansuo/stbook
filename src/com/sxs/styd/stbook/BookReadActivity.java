@@ -24,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -60,6 +61,7 @@ public class BookReadActivity extends BaseActivity implements View.OnClickListen
     private int light;
     private boolean isNight;
     private LayoutParams lp;
+    private boolean isFirstMove;
     
     public String word;
     
@@ -94,13 +96,25 @@ public class BookReadActivity extends BaseActivity implements View.OnClickListen
         mPageWidget.setBitmaps(mCurPageBitmap, mCurPageBitmap);
         mPageWidget.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (v == mPageWidget && !show){
-                    if (!touchDownEvent(event)){
-                        return false;
+            public boolean onTouch(View v, MotionEvent e) {
+                boolean ret = false;
+                if (v == mPageWidget && !show) {
+                    if (e.getAction() == MotionEvent.ACTION_DOWN) {
+                        if (e.getY() > readHeight) {// 超出范围了，表示单击到广告条，则不做翻页
+                            return false;
+                        }
+                        isFirstMove = true;
                     }
-                    //记录当前翻看进度
-                    return mPageWidget.doTouchEvent(event); //按下事件处理进度
+                    if (e.getAction() == MotionEvent.ACTION_MOVE && isFirstMove) {
+                        isFirstMove = false;
+                        mPageWidget.abortAnimation();
+                        mPageWidget.setRightToLeft(e.getX());
+                        if (!handlerEvent()){
+                            return false;
+                        }
+                    }
+                    ret = mPageWidget.doTouchEvent(e);
+                    return ret;
                 }
                 return false;
             }
@@ -123,49 +137,40 @@ public class BookReadActivity extends BaseActivity implements View.OnClickListen
             pageFactory.setMTextColor(Color.rgb(28, 28, 28));
         }
     }
-    /**
-     * 触摸按下事件处理
-     * @param event 事件
-     * @return 是否需要结束
-     */
-    private boolean touchDownEvent(MotionEvent event){
-        if (event.getAction() == MotionEvent.ACTION_DOWN){
-            if (event.getY() > readHeight){ //超出了显示 范围 ， 表示点击到广告条，不做翻页
+    
+    private boolean handlerEvent(){
+        pageFactory.onDraw(mCurPageCanvas);
+        if (mPageWidget.getRightToLeft()) { // 左翻
+            try {
+                pageFactory.prePage();
+                begin = pageFactory.getMMbBufBegin(); // 获取当前阅读位置
+                word = pageFactory.getFirstLineText(); // 获取当前阅读位置的首行文字
+            } catch (IOException e1) {
+                Log.e(TAG, "onTouch->prePage error", e1);
+            }
+            if (pageFactory.isfirstPage()) {
+                showToast("当前是第一页");
                 return false;
             }
-            pageFactory.onDraw(mCurPageCanvas);
-            if (event.getX() < Constants.SCREEN_WIDTH * 0.33f){
-                try {
-                    pageFactory.prePage();
-                    begin = pageFactory.getMMbBufBegin(); //获取当前阅读位置
-                    word = pageFactory.getFirstLineText(); //获取当前阅读位置的首行文字
-                } catch (IOException el){
-                    Log.e(TAG, "onTouch->prePage error", el);
-                }
-                if (pageFactory.isfirstPage()){
-                    showToast("当前是第一页");
-                    return false;
-                }
-                pageFactory.onDraw(mNextPageCanvas);
-                mPageWidget.setRightToLeft(false);
-            } else if (event.getX() > Constants.SCREEN_WIDTH * 0.66f){ //右翻
-                try {
-                    pageFactory.nextPage();
-                    begin = pageFactory.getMMbBufBegin();
-                    word = pageFactory.getFirstLineText();
-                } catch (IOException e1){
-                    Log.e(TAG, "onTouch->nextPage error", e1);
-                }
-                if (pageFactory.islastPage()){
-                    showToast("已经是最后一页了");
-                }
-                pageFactory.onDraw(mNextPageCanvas);
-                mPageWidget.setRightToLeft(true);
+            pageFactory.onDraw(mNextPageCanvas);
+        } else { // 右翻
+            try {
+                pageFactory.nextPage();
+                begin = pageFactory.getMMbBufBegin(); // 获取当前阅读位置
+                word = pageFactory.getFirstLineText(); // 获取当前阅读位置的首行文字
+            } catch (IOException e1) {
+                Log.e(TAG, "onTouch->nextPage error", e1);
             }
-            mPageWidget.setBitmaps(mCurPageBitmap, mNextPageBitmap);
+            if (pageFactory.islastPage()) {
+                showToast("已经是最后一页了");
+                return false;
+            }
+            pageFactory.onDraw(mNextPageCanvas);
         }
+        mPageWidget.setBitmaps(mCurPageBitmap, mNextPageBitmap);
         return true;
     }
+    
     /**
      * 设置弹出窗口
      */
