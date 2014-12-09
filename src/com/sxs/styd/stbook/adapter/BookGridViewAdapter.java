@@ -17,7 +17,7 @@ import com.sxs.styd.stbook.vo.BookVO;
  *
  */
 public class BookGridViewAdapter extends BaseAdapter {
-	
+    
     private ArrayList<BookVO> listData;
     private Context myContext;
     
@@ -26,35 +26,35 @@ public class BookGridViewAdapter extends BaseAdapter {
      * @param context иообнд
      */
     public BookGridViewAdapter(Context context){
-    	myContext = context;
+        myContext = context;
     }
 
-	/**
-	 * @param listData the listData to set
-	 */
+    /**
+     * @param listData the listData to set
+     */
     public void setListData(ArrayList<BookVO> listData) {
         this.listData = listData;
     }
 
     @Override
-  	public int getCount() {
+      public int getCount() {
         return listData.size();
     }
 
     @Override
-  	public Object getItem(int position) {
-  		// TODO Auto-generated method stub
+      public Object getItem(int position) {
+          // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-  	public long getItemId(int position) {
-  		// TODO Auto-generated method stub
+      public long getItemId(int position) {
+          // TODO Auto-generated method stub
         return 0;
     }
 
     @Override
-  	public View getView(int position, View convertView, ViewGroup parent) {
+      public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if (convertView == null){
             convertView = LayoutInflater.from(myContext).inflate(R.layout.book_gridview_item, null);

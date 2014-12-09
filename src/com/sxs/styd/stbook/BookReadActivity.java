@@ -1,6 +1,7 @@
 package com.sxs.styd.stbook;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
+import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -28,18 +30,21 @@ import android.widget.Toast;
 
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
+import com.sxs.styd.stbook.adapter.BookGridViewAdapter;
+import com.sxs.styd.stbook.adapter.BookSettingAdapter;
 import com.sxs.styd.stbook.base.BaseActivity;
 import com.sxs.styd.stbook.component.BookPageFactory;
 import com.sxs.styd.stbook.component.PageWidget;
 import com.sxs.styd.stbook.config.Constants;
 import com.sxs.styd.stbook.data.DBManager;
 import com.sxs.styd.stbook.vo.BookVO;
+import com.sxs.styd.stbook.vo.SettingVO;
 /**
  * 阅读类
  * @author user
  *
  */
-public class BookReadActivity extends BaseActivity implements View.OnClickListener{
+public class BookReadActivity extends BaseActivity{
     
     @ViewInject(R.id.rl_read_layout)  RelativeLayout  rlLayout;
     private BookVO        currItem;
@@ -67,12 +72,9 @@ public class BookReadActivity extends BaseActivity implements View.OnClickListen
     
     private PopupWindow mPopupWindow; //填出弹出目录
     private View mPopupView;
-    private TextView bookBtn1;
-    private TextView bookBtn2;
-    private TextView bookBtn3;
-    private TextView bookBtn4;
-    private TextView speakBtn;
     private LinearLayout layout;
+    private ArrayList<SettingVO> settingList = null;
+    private BookSettingAdapter settingAdapter;
     
     /* (non-Javadoc)
      * @see com.sxs.styd.stbook.base.BaseActivity#onCreate(android.os.Bundle)
@@ -136,6 +138,7 @@ public class BookReadActivity extends BaseActivity implements View.OnClickListen
             pageFactory.setBgBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.bg));
             pageFactory.setMTextColor(Color.rgb(28, 28, 28));
         }
+        initSetting();
     }
     
     private boolean handlerEvent(){
@@ -206,18 +209,29 @@ public class BookReadActivity extends BaseActivity implements View.OnClickListen
             showToast("打开电子书失败");
         }
     }
-    
+    /**
+     * 初始化设置
+     */
+    private void initSetting(){
+        settingList = new ArrayList<SettingVO>();
+        for (int i = 0; i < Constants.SETTING_TITLE.length; i++){
+            SettingVO item = new SettingVO();
+            item.textTitle = Constants.SETTING_TITLE[i];
+            item.imageId = Constants.SETTING_IMG[i];
+            settingList.add(item);
+        }
+        settingAdapter = new BookSettingAdapter(this);
+        settingAdapter.setListData(settingList);
+    }
     
     /**
      * 弹出窗口
      */
     private void pop(){
         mPopupWindow.showAtLocation(mPageWidget, Gravity.BOTTOM, 0, 0);
-        bookBtn1 = (TextView) mPopupView.findViewById(R.id.bookBtn1);
-        bookBtn2 = (TextView) mPopupView.findViewById(R.id.bookBtn2);
-        bookBtn3 = (TextView) mPopupView.findViewById(R.id.bookBtn3);
-        bookBtn4 = (TextView) mPopupView.findViewById(R.id.bookBtn4);
-        speakBtn = (TextView) mPopupView.findViewById(R.id.text_speak);
+        GridView settingGV = (GridView) mPopupView.findViewById(R.id.book_setting);
+        settingGV.setAdapter(settingAdapter);
+        settingAdapter.notifyDataSetChanged();
         layout = (LinearLayout) mPopupView.findViewById(R.id.book_pop);
         getLight();
         if (isNight){
@@ -225,11 +239,7 @@ public class BookReadActivity extends BaseActivity implements View.OnClickListen
         } else {
             layout.setBackgroundResource(R.drawable.titlebar_big);
         }
-        bookBtn1.setOnClickListener(this);
-        bookBtn2.setOnClickListener(this);
-        bookBtn3.setOnClickListener(this);
-        bookBtn4.setOnClickListener(this);
-        speakBtn.setOnClickListener(this);
+
     }
     
     /* (non-Javadoc)
@@ -297,18 +307,6 @@ public class BookReadActivity extends BaseActivity implements View.OnClickListen
         mPageWidget = null;
         
         finish();
-    }
-    @Override
-    public void onClick(View v) {
-        int tag = v.getId();
-        switch (tag) {
-            case R.id.bookBtn1:
-              
-                break;
-    
-            default:
-                break;
-        }
     }
     
 }
