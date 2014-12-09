@@ -50,7 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:text="导入"/>
+            android:text="@string/import_str"/>
         <ListView android:id="@+id/file_list_lv" 
                 android:layout_height="wrap_content"  
                 android:layout_width="match_parent"

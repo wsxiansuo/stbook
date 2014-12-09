@@ -121,7 +121,7 @@ public class BookPageFactory {
      * »æÖÆ²Ù×÷
      * @param c Canvas
      */
-    public void onDraw(Canvas c){
+    public void draw(Canvas c){
         word=new StringBuilder();
         mPaint.setTextSize(mFontSize);
         mPaint.setColor(mTextColor);

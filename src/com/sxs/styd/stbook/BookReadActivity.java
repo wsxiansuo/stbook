@@ -21,16 +21,14 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
-import com.sxs.styd.stbook.adapter.BookGridViewAdapter;
 import com.sxs.styd.stbook.adapter.BookSettingAdapter;
 import com.sxs.styd.stbook.base.BaseActivity;
 import com.sxs.styd.stbook.component.BookPageFactory;
@@ -70,12 +68,18 @@ public class BookReadActivity extends BaseActivity{
     
     public String word;
     
+    private PopupWindow mPopLightWindow;
+    private View mPopLightView;
+    
+    
+    
     private PopupWindow mPopupWindow; //填出弹出目录
     private View mPopupView;
     private LinearLayout layout;
+    private GridView settingGV;
     private ArrayList<SettingVO> settingList = null;
     private BookSettingAdapter settingAdapter;
-    
+    private SettingVO currSettingItem;
     /* (non-Javadoc)
      * @see com.sxs.styd.stbook.base.BaseActivity#onCreate(android.os.Bundle)
      */
@@ -106,12 +110,17 @@ public class BookReadActivity extends BaseActivity{
                             return false;
                         }
                         isFirstMove = true;
-                    }
-                    if (e.getAction() == MotionEvent.ACTION_MOVE && isFirstMove) {
-                        isFirstMove = false;
-                        mPageWidget.abortAnimation();
-                        mPageWidget.setRightToLeft(e.getX());
-                        if (!handlerEvent()){
+                        mPageWidget.setLastTouchX((int)e.getX());
+                    } else if (e.getAction() == MotionEvent.ACTION_UP) {
+                        isFirstMove = true;
+                    } else if (e.getAction() == MotionEvent.ACTION_MOVE && isFirstMove) {
+                        if (mPageWidget.calculateIsChangePage((int)e.getX())){
+                            isFirstMove = false;
+                            mPageWidget.abortAnimation();
+                            if (!handlerEvent()){
+                                return false;
+                            }
+                        } else {
                             return false;
                         }
                     }
@@ -138,12 +147,11 @@ public class BookReadActivity extends BaseActivity{
             pageFactory.setBgBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.bg));
             pageFactory.setMTextColor(Color.rgb(28, 28, 28));
         }
-        initSetting();
     }
     
     private boolean handlerEvent(){
-        pageFactory.onDraw(mCurPageCanvas);
-        if (mPageWidget.getRightToLeft()) { // 左翻
+        pageFactory.draw(mCurPageCanvas);
+        if (!mPageWidget.getRightToLeft()) { // 左翻
             try {
                 pageFactory.prePage();
                 begin = pageFactory.getMMbBufBegin(); // 获取当前阅读位置
@@ -155,7 +163,7 @@ public class BookReadActivity extends BaseActivity{
                 showToast("当前是第一页");
                 return false;
             }
-            pageFactory.onDraw(mNextPageCanvas);
+            pageFactory.draw(mNextPageCanvas);
         } else { // 右翻
             try {
                 pageFactory.nextPage();
@@ -168,7 +176,7 @@ public class BookReadActivity extends BaseActivity{
                 showToast("已经是最后一页了");
                 return false;
             }
-            pageFactory.onDraw(mNextPageCanvas);
+            pageFactory.draw(mNextPageCanvas);
         }
         mPageWidget.setBitmaps(mCurPageBitmap, mNextPageBitmap);
         return true;
@@ -178,8 +186,112 @@ public class BookReadActivity extends BaseActivity{
      * 设置弹出窗口
      */
     private void setPop(){
+        settingList = new ArrayList<SettingVO>();
+        for (int i = 0; i < Constants.SETTING_TITLE.length; i++){
+            SettingVO item = new SettingVO();
+            item.textTitle = Constants.SETTING_TITLE[i];
+            item.imageId = Constants.SETTING_IMG[i];
+            settingList.add(item);
+        }
+        settingAdapter = new BookSettingAdapter(this);
+        settingAdapter.setListData(settingList);
+        
         mPopupView = LayoutInflater.from(this).inflate(R.layout.pop_style_setting_layout, null);
         mPopupWindow = new PopupWindow(mPopupView, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+        mPopupWindow.setFocusable(true);
+        settingGV = (GridView) mPopupView.findViewById(R.id.book_setting);
+        settingGV.setAdapter(settingAdapter);
+        settingGV.setOnItemClickListener(adapterClickListener);
+        settingAdapter.notifyDataSetChanged();
+        layout = (LinearLayout) mPopupView.findViewById(R.id.book_pop);
+    }
+    private AdapterView.OnItemClickListener adapterClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Log.i("aaa", position + "aaaaaaaaaaaaaa");
+            currSettingItem = settingList.get(position);
+            switch (position) {
+                case 0:
+                    lightSetting();
+                    break;
+                case 1:
+                    rollSetting();
+                    break;
+                case 2:
+                    jumpSetting();
+                    break;
+                case 3:
+                    nightSetting();
+                    break;
+                case 4:
+                    timeSetting();
+                    break;
+                case 5:
+                    prePage();
+                    break;
+                case 6:
+                    nextPage();
+                    break;
+                case 7:
+                    searchSetting();
+                    break;
+                case 8:
+                    soundSetting();
+                    break;
+                case 9:
+                    styleSetting();
+                    break;
+                default:
+                    styleSetting();
+                    break;
+            }
+        }
+    };
+    //亮度设置
+    private void lightSetting(){
+        if (mPopupWindow.isShowing()){
+            mPopupWindow.dismiss();
+        }
+        if (mPopLightView == null){
+            mPopLightView = LayoutInflater.from(this).inflate(R.layout.pop_light_layout, null);
+            mPopLightWindow = new PopupWindow(mPopLightView, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+        }
+        mPopLightWindow.showAtLocation(mPageWidget, Gravity.BOTTOM, 0, 0);
+    }
+    //滚屏设置
+    private void rollSetting(){
+      
+    }
+    //跳转设置
+    private void jumpSetting(){
+      
+    }
+    //夜间模式
+    private void nightSetting(){
+      
+    }
+    //定时设置
+    private void timeSetting(){
+      
+    }
+    //上一篇
+    private void prePage(){
+      
+    }
+    //下一篇
+    private void nextPage(){
+      
+    }
+    //搜索
+    private void searchSetting(){
+        
+    }
+    //朗读
+    private void soundSetting(){
+      
+    }
+    //设置
+    private void styleSetting(){
         
     }
     /**
@@ -203,25 +315,11 @@ public class BookReadActivity extends BaseActivity{
         try {
             pageFactory.openbook(currItem.path, begin); //从指定位置打开书籍 默认从开始打开
             pageFactory.setMFontSize(size);
-            pageFactory.onDraw(mCurPageCanvas);
+            pageFactory.draw(mCurPageCanvas);
         } catch (IOException e1){
             Log.e(TAG, "打开电子书失败", e1);
             showToast("打开电子书失败");
         }
-    }
-    /**
-     * 初始化设置
-     */
-    private void initSetting(){
-        settingList = new ArrayList<SettingVO>();
-        for (int i = 0; i < Constants.SETTING_TITLE.length; i++){
-            SettingVO item = new SettingVO();
-            item.textTitle = Constants.SETTING_TITLE[i];
-            item.imageId = Constants.SETTING_IMG[i];
-            settingList.add(item);
-        }
-        settingAdapter = new BookSettingAdapter(this);
-        settingAdapter.setListData(settingList);
     }
     
     /**
@@ -229,17 +327,12 @@ public class BookReadActivity extends BaseActivity{
      */
     private void pop(){
         mPopupWindow.showAtLocation(mPageWidget, Gravity.BOTTOM, 0, 0);
-        GridView settingGV = (GridView) mPopupView.findViewById(R.id.book_setting);
-        settingGV.setAdapter(settingAdapter);
-        settingAdapter.notifyDataSetChanged();
-        layout = (LinearLayout) mPopupView.findViewById(R.id.book_pop);
         getLight();
         if (isNight){
             layout.setBackgroundResource(R.drawable.tmall_bar_bg);
         } else {
             layout.setBackgroundResource(R.drawable.titlebar_big);
         }
-
     }
     
     /* (non-Javadoc)

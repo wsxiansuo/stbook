@@ -12,4 +12,12 @@
     <string name="bookpop_card">书签</string>
     <string name="bookpop_send">跳转</string>
     <string name="speak">语音</string>
+    
+    
+    
+    
+    <string name="import_str">导入</string>
+    <string name="nodata_tip">暂无书籍,点我加载本地电子书</string>
+    <string name="str_system_text">使用系统亮度</string>
+    <string name="str_silder_text">滑屏亮度调节</string>
 </resources>

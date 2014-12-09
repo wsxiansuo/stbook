@@ -4,7 +4,8 @@
     android:layout_height="match_parent" 
     android:background="@drawable/book_setting_bg"
     android:layout_gravity="center"
-    android:gravity="center">
+    android:gravity="center"
+    android:descendantFocusability="blocksDescendants">
         <TextView
         android:id="@+id/tv_setting_item"
         style="@style/text_style"

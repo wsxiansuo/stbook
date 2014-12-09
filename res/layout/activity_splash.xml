@@ -40,7 +40,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="40dp"
         android:gravity="center_horizontal"
-        android:text="V1.0.0"
         android:textColor="@android:color/white"
         android:textSize="16sp" />
 

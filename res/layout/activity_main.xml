@@ -30,7 +30,7 @@
 	<TextView android:id="@+id/nodata_tip_tv"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:text="暂无书籍,点我加载本地电子书"
+	    android:text="@string/nodata_tip"
 	    android:textColor="@color/topbar_center_color"
 	    android:textSize="@dimen/title_text_size"
 	    android:layout_centerInParent="true"

@@ -26,7 +26,7 @@ import android.widget.Scroller;
  * 
  */
 public class PageWidget extends View {
-
+    private static final int DISTANCE = 30;
     private Bitmap foreImage;
     private Bitmap bgImage;
     private PointF touchPt;
@@ -37,12 +37,26 @@ public class PageWidget extends View {
     private ColorMatrixColorFilter mColorMatrixFilter;
     private Scroller mScroller;
     private int lastTouchX;
+    /**
+     * @param lastTouchX the lastTouchX to set
+     */
+    public void setLastTouchX(int lastTouchX) {
+        this.lastTouchX = lastTouchX;
+    }
     private boolean rightToLeft = false;
     /**
      * @param rightToLeft the rightToLeft to set
      */
-    public void setRightToLeft(float x) {
-        this.rightToLeft = x > lastTouchX;
+    public boolean calculateIsChangePage(int x) {
+        int value = x - lastTouchX;
+        if (value > DISTANCE){
+            rightToLeft = false;
+        } else if (value < -DISTANCE){
+            rightToLeft = true;
+        } else {
+            return false;
+        }
+        return true;
     }
     public boolean getRightToLeft(){
         return rightToLeft;
