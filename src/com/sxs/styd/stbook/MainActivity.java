@@ -98,9 +98,9 @@ public class MainActivity extends BaseActivity implements IActivity{
         openActivity(FileHandlerActivity.class);
         Log.i("aaa", "tiao zhuan");
     }
-	/**.
-	 * 回调更新页面
-	 */
+    /**.
+     * 回调更新页面
+     */
     @Override
     public void update(){
         if (deletePost >= 0){
@@ -126,7 +126,7 @@ public class MainActivity extends BaseActivity implements IActivity{
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-    	// Inflate the menu; this adds items to the action bar if it is present.
+        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }

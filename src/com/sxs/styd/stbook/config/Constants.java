@@ -17,6 +17,14 @@ public class Constants {
     // 屏幕密度
     public static float SCREEN_DENSITY;
     
+    // 屏幕亮度
+    public static int SCREEN_LIGHT;
+    
+    public static String USE_SYSTEM_LIGHT = "useSystemLight";
+    public static String LIGHT = "light";
+    
+    
+    
     public static final String CONFIG = "CONFIG";
     
     public static String[] SETTING_TITLE = {"亮度", "滚屏", "跳转", "夜间", "定时", "上一篇", "下一篇", "搜索", "朗读", "设置"};

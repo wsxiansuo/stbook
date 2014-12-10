@@ -41,8 +41,8 @@ public class AlertDialogs {
      * @param activity 接口
      */
     public AlertDialogs(Context context, IActivity activity) {
-    	this.context = context;
-    	this.activity = activity;
+        this.context = context;
+        this.activity = activity;
     }
     /**.
      * 弹出提示窗口
@@ -54,48 +54,48 @@ public class AlertDialogs {
      */
     public void alertDialog(String title, String content, String btsString1,
         String btString2, String tag) {
-    	final View view;
-    	view = LayoutInflater.from(context).inflate(R.layout.alert_dialog_layout, null);
-    	exitButton = (Button) view.findViewById(R.id.right_btn);
-    	noButton = (Button) view.findViewById(R.id.left_btn);
-    	tvTitle = (TextView) view.findViewById(R.id.dialog_title);
-    	tvContent = (TextView) view.findViewById(R.id.dialog_content);
-    	exitButton.setText(btsString1);
-    	noButton.setText(btString2);
-    	tvTitle.setText(title);
-    	tvContent.setText(content);
-    	aDialog = new AlertDialog.Builder(context).create();
-    	aDialog.show();
-    	WindowManager.LayoutParams params = aDialog.getWindow().getAttributes();
-    	params.width =(int) (Constants.SCREEN_WIDTH * PERCENT_WD);
-    	params.height = (int) (Constants.SCREEN_HEIGHT* PERCENT_HG);
-    	aDialog.getWindow().setAttributes(params);
-    	aDialog.getWindow().setContentView(view);
-    	noButton.setTag(tag);
-    	exitButton.setTag(tag);
-    	noButton.setOnClickListener(new OnClickListener() {
-    		@Override
-    		public void onClick(View v) {
+        final View view;
+        view = LayoutInflater.from(context).inflate(R.layout.alert_dialog_layout, null);
+        exitButton = (Button) view.findViewById(R.id.right_btn);
+        noButton = (Button) view.findViewById(R.id.left_btn);
+        tvTitle = (TextView) view.findViewById(R.id.dialog_title);
+        tvContent = (TextView) view.findViewById(R.id.dialog_content);
+        exitButton.setText(btsString1);
+        noButton.setText(btString2);
+        tvTitle.setText(title);
+        tvContent.setText(content);
+        aDialog = new AlertDialog.Builder(context).create();
+        aDialog.show();
+        WindowManager.LayoutParams params = aDialog.getWindow().getAttributes();
+        params.width =(int) (Constants.SCREEN_WIDTH * PERCENT_WD);
+        params.height = (int) (Constants.SCREEN_HEIGHT* PERCENT_HG);
+        aDialog.getWindow().setAttributes(params);
+        aDialog.getWindow().setContentView(view);
+        noButton.setTag(tag);
+        exitButton.setTag(tag);
+        noButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 aDialog.dismiss();
                 if (v.getTag().equals(TAG_EXIT)) {
-                	aDialog.dismiss();
+                    aDialog.dismiss();
                 } else if (v.getTag().equals(TAG_NET)) {
-                	aDialog.dismiss();
-                	AppManager.getInstance().appExit(context);
-                }
-    		}
-    	});
-    	exitButton.setOnClickListener(new OnClickListener() {
-    		@Override
-    		public void onClick(View v) {
-  		    if (v.getTag().equals(TAG_EXIT)) {
                     aDialog.dismiss();
                     AppManager.getInstance().appExit(context);
-		    } else if (v.getTag().equals(TAG_DELETE)) {
+                }
+            }
+        });
+        exitButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              if (v.getTag().equals(TAG_EXIT)) {
+                    aDialog.dismiss();
+                    AppManager.getInstance().appExit(context);
+            } else if (v.getTag().equals(TAG_DELETE)) {
                     aDialog.dismiss();
                     activity.update();
-	        }
-    		}
-    	});
+            }
+            }
+        });
     }
 }

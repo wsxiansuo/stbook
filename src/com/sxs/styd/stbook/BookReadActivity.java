@@ -18,14 +18,18 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -68,7 +72,7 @@ public class BookReadActivity extends BaseActivity{
     
     public String word;
     
-    private PopupWindow mPopLightWindow;
+    private PopupWindow mPopLightWindow; //亮度调节
     private View mPopLightView;
     
     
@@ -208,7 +212,6 @@ public class BookReadActivity extends BaseActivity{
     private AdapterView.OnItemClickListener adapterClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Log.i("aaa", position + "aaaaaaaaaaaaaa");
             currSettingItem = settingList.get(position);
             switch (position) {
                 case 0:
@@ -255,6 +258,48 @@ public class BookReadActivity extends BaseActivity{
         if (mPopLightView == null){
             mPopLightView = LayoutInflater.from(this).inflate(R.layout.pop_light_layout, null);
             mPopLightWindow = new PopupWindow(mPopLightView, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+            final SeekBar seekBar = (SeekBar) mPopLightView.findViewById(R.id.sb_light_silder);
+            final CheckBox systemCB = (CheckBox) mPopLightView.findViewById(R.id.cb_light_system);
+            RelativeLayout systemRL = (RelativeLayout) mPopLightView.findViewById(R.id.rl_light_system);
+            OnClickListener clickListener = new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    systemCB.setChecked(!systemCB.isChecked());
+                    if (systemCB.isChecked()){
+                        setScreenBrightness(Constants.SCREEN_LIGHT);
+                        editor.putBoolean(Constants.USE_SYSTEM_LIGHT, true);
+                        seekBar.setEnabled(false);
+                    } else {
+                        editor.putBoolean(Constants.USE_SYSTEM_LIGHT, false);
+                        seekBar.setEnabled(true);
+                        
+                    }
+                    editor.commit();
+                }
+            };
+            systemRL.setOnClickListener(clickListener);
+            seekBar.setProgress((int)(Constants.SCREEN_LIGHT / 255.0f * 100));
+            seekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    showToast(seekBar.getProgress() + "%");
+                }
+                
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                }
+                
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    if (fromUser){
+                        int value = (int)(255 * (progress < 10 ? 10 : progress) * 0.01f);
+                        editor.putInt(Constants.LIGHT, value);
+                        editor.commit();
+                        setScreenBrightness(value);
+                    }
+                }
+            });
+            
         }
         mPopLightWindow.showAtLocation(mPageWidget, Gravity.BOTTOM, 0, 0);
     }
@@ -294,6 +339,16 @@ public class BookReadActivity extends BaseActivity{
     private void styleSetting(){
         
     }
+    
+    private void clearPopWindow(){
+        if (mPopupWindow != null && mPopupWindow.isShowing()){
+            mPopupWindow.dismiss();
+        }
+        if (mPopLightWindow != null && mPopLightWindow.isShowing()){
+            mPopLightWindow.dismiss();
+        }
+    }
+    
     /**
      * 读取配置文件中字体大小
      */
@@ -335,6 +390,14 @@ public class BookReadActivity extends BaseActivity{
         }
     }
     
+    private void setScreenBrightness(int paramInt){
+        Window localWindow = getWindow();
+        WindowManager.LayoutParams localLayoutParams = localWindow.getAttributes();
+        float f = paramInt / 255.0f;
+        localLayoutParams.screenBrightness = f;
+        localWindow.setAttributes(localLayoutParams);
+    }
+    
     /* (non-Javadoc)
      * @see android.app.Activity#onKeyDown(int, android.view.KeyEvent)
      */
@@ -344,7 +407,7 @@ public class BookReadActivity extends BaseActivity{
             if (show){
                 show = false;
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-                mPopupWindow.dismiss();
+                clearPopWindow();
             } else {
                 finish();
             }
@@ -358,7 +421,7 @@ public class BookReadActivity extends BaseActivity{
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_MENU){
             if (show){
-                mPopupWindow.dismiss();
+                clearPopWindow();
             } else {
                 pop();
             }
