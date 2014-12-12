@@ -20,14 +20,15 @@ public class Constants {
     // 屏幕亮度
     public static int SCREEN_LIGHT;
     
-    public static String USE_SYSTEM_LIGHT = "useSystemLight";
-    public static String LIGHT = "light";
+    public static final String USE_SYSTEM_LIGHT = "useSystemLight";
+    public static final String LIGHT = "light";
+    public static final String ROLL = "roll";
     
     
     
     public static final String CONFIG = "CONFIG";
     
-    public static String[] SETTING_TITLE = {"亮度", "滚屏", "跳转", "夜间", "定时", "上一篇", "下一篇", "搜索", "朗读", "设置"};
+    public static String[] SETTING_TITLE = {"亮度", "目录", "跳转", "夜间", "定时", "上一篇", "下一篇", "搜索", "朗读", "设置"};
     public static int[] SETTING_IMG = {R.drawable.img_light,
                                           R.drawable.img_jump,
                                           R.drawable.img_jump,
@@ -39,5 +40,6 @@ public class Constants {
                                           R.drawable.img_sound,
                                           R.drawable.img_setting};
     
+
     
 }

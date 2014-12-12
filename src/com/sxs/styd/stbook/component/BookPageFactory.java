@@ -7,12 +7,15 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.text.DecimalFormat;
 import java.util.Vector;
+
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.util.Log;
+
+import com.sxs.styd.stbook.util.TxtReadUtil;
 
 /**
  * 书页
@@ -34,8 +37,6 @@ public class BookPageFactory {
     private int mMbBufEnd = 0; // 当前页终点位置
 
     private int mMbBufLen = 0; // 图书总长度
-
-    private String mStrCharsetName = "GBK";
 
     private int mTextColor = Color.rgb(28, 28, 28);
 
@@ -172,7 +173,7 @@ public class BookPageFactory {
             mMbBufEnd = begin;
         }
     }
-
+    
     /**
      * 画指定页的下一页
      * 
@@ -184,10 +185,10 @@ public class BookPageFactory {
         String strParagraph = "";
         Vector<String> lines = new Vector<String>();
         while (lines.size() < mLineCount && mMbBufEnd < mMbBufLen) {
-            byte[] paraBuf = readParagraphForward(mMbBufEnd);
+            byte[] paraBuf = TxtReadUtil.readParagraphForward(mMbBufEnd, mMbBuf, mMbBufLen);
             mMbBufEnd += paraBuf.length; // 每次读取后，记录结束点位置，该位置是段落结束位置
             try {
-                strParagraph = new String(paraBuf, mStrCharsetName); // 转换成制定GBK编码
+                strParagraph = new String(paraBuf, TxtReadUtil.STR_CHAREST_NAME); // 转换成制定GBK编码
             } catch (UnsupportedEncodingException e) {
                 Log.e(TAG, "pageDown->转换编码失败", e);
             }
@@ -217,7 +218,7 @@ public class BookPageFactory {
             // 如果该页最后一段只显示了一部分，则从新定位结束点位置
             if (strParagraph.length() != 0) {
                 try {
-                    mMbBufEnd -= (strParagraph + strReturn).getBytes(mStrCharsetName).length;
+                    mMbBufEnd -= (strParagraph + strReturn).getBytes(TxtReadUtil.STR_CHAREST_NAME).length;
                 } catch (UnsupportedEncodingException e) {
                     Log.e(TAG, "pageDown->记录结束点位置失败", e);
                 }
@@ -240,7 +241,7 @@ public class BookPageFactory {
             byte[] paraBuf = readParagraphBack(mMbBufBegin);
             mMbBufBegin -= paraBuf.length; // 每次读取一段后,记录开始点位置,是段首开始的位置
             try {
-                strParagraph = new String(paraBuf, mStrCharsetName);
+                strParagraph = new String(paraBuf, TxtReadUtil.STR_CHAREST_NAME);
             } catch (UnsupportedEncodingException e) {
                 Log.e(TAG, "pageUp->转换编码失败", e);
             }
@@ -262,7 +263,7 @@ public class BookPageFactory {
 
         while (lines.size() > mLineCount) {
             try {
-                mMbBufBegin += lines.get(0).getBytes(mStrCharsetName).length;
+                mMbBufBegin += lines.get(0).getBytes(TxtReadUtil.STR_CHAREST_NAME).length;
                 lines.remove(0);
             } catch (UnsupportedEncodingException e) {
                 Log.e(TAG, "pageUp->记录起始点位置失败", e);
@@ -301,7 +302,7 @@ public class BookPageFactory {
         int i;
         byte b0;
         byte b1;
-        if ("UTF-16LE".equals(mStrCharsetName)){
+        if ("UTF-16LE".equals(TxtReadUtil.STR_CHAREST_NAME)){
             i = nEnd - 2;
             while (i > 0) {
                 b0 = mMbBuf.get(i);
@@ -313,7 +314,7 @@ public class BookPageFactory {
                 i--;
             }
 
-        } else if ("UTF-16BE".equals(mStrCharsetName)){
+        } else if ("UTF-16BE".equals(TxtReadUtil.STR_CHAREST_NAME)){
             i = nEnd - 2;
             while (i > 0) {
                 b0 = mMbBuf.get(i);
@@ -347,49 +348,7 @@ public class BookPageFactory {
         return buf;
     }
 
-    /**
-     * 读取指定位置的下一个段落
-     * 
-     * @param nFromPos 位置
-     * @return byte[] 字节流
-     */
-    public byte[] readParagraphForward(int nFromPos) {
-        int nStart = nFromPos;
-        int i = nStart;
-        byte b0;
-        byte b1;
-        // 根据编码格式判断换行
-        if ("UTF-16LE".equals(mStrCharsetName)){
-            while (i < mMbBufLen - 1) {
-                b0 = mMbBuf.get(i++);
-                b1 = mMbBuf.get(i++);
-                if (b0 == 0x0a && b1 == 0x00) {
-                    break;
-                }
-            }
-        } else if ("UTF-16BE".equals(mStrCharsetName)){
-            while (i < mMbBufLen - 1) {
-                b0 = mMbBuf.get(i++);
-                b1 = mMbBuf.get(i++);
-                if (b0 == 0x00 && b1 == 0x0a) {
-                    break;
-                }
-            }
-        } else {
-            while (i < mMbBufLen) {
-                b0 = mMbBuf.get(i++);
-                if (b0 == 0x0a) {
-                    break;
-                }
-            }
-        }
-        int nParaSize = i - nStart;
-        byte[] buf = new byte[nParaSize];
-        for (i = 0; i < nParaSize; i++) {
-            buf[i] = mMbBuf.get(nFromPos + i);
-        }
-        return buf;
-    }
+    
     /**
      * 设置背景图
      * @param bg 背景

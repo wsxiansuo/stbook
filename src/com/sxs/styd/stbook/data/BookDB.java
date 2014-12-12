@@ -22,13 +22,15 @@ public class BookDB extends SQLiteOpenHelper{
     public static String PATH = "path";
     public static String NAME = "name";
     public static String LAST_POSTION = "lastPostion";
-
+    public static String STATE = "state";
     
     //标签表格
     public static String TABLE_MARK = "table_mark";
     public static String BOOK_ID = "book_id";
     public static String POSTION = "postion";
     
+    //图书目录
+    public static final String TABLE_SECTION = "table_section";
     
     /**.
      * 构造方法
@@ -40,15 +42,19 @@ public class BookDB extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-          String sqlBook = "CREATE TABLE " + TABLE_BOOK + 
-              "( "+ ID + " integer primary key autoincrement, " + PARENT + 
-              " varchar(200), " + PATH + " varchar(200), " + NAME + 
-              " varchar(200), " + LAST_POSTION + " float, " + LAST_TIME + " double)";
-          String sqlMark = "CREATE TABLE " + TABLE_MARK + 
-              "(" + ID + " integer primary key autoincrement, " + BOOK_ID + 
-              " integer," + POSTION + " text, " + LAST_TIME + " text)";
-          db.execSQL(sqlBook);
-          db.execSQL(sqlMark);
+        String sqlBook = "CREATE TABLE " + TABLE_BOOK + 
+            "( "+ ID + " integer primary key autoincrement, " + PARENT + 
+            " varchar(200), " + PATH + " varchar(200), " + NAME + 
+            " varchar(200), " + LAST_POSTION + " float, " + STATE + " integer, " + LAST_TIME + " double)";
+        String sqlMark = "CREATE TABLE " + TABLE_MARK + 
+            "(" + ID + " integer primary key autoincrement, " + BOOK_ID + 
+            " integer," + POSTION + " text, " + LAST_TIME + " text)";
+        String sqlMenu = "CREATE TABLE " + TABLE_SECTION + 
+            "(" + ID + " integer primary key autoincrement, " + BOOK_ID + 
+            " integer," + POSTION + " text, " + NAME + " text)";
+        db.execSQL(sqlBook);
+        db.execSQL(sqlMark);
+        db.execSQL(sqlMenu);
     }
 
     @Override

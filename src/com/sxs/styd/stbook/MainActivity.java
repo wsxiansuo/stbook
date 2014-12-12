@@ -17,6 +17,7 @@ import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.sxs.styd.stbook.adapter.BookGridViewAdapter;
+import com.sxs.styd.stbook.base.BaseActionBar;
 import com.sxs.styd.stbook.base.BaseActivity;
 import com.sxs.styd.stbook.base.IActivity;
 import com.sxs.styd.stbook.data.DBManager;
@@ -32,6 +33,7 @@ public class MainActivity extends BaseActivity implements IActivity{
     public static final String TAG = MainActivity.class.getSimpleName();
     @ViewInject(R.id.book_grid)       GridView  bookGrid;
     @ViewInject(R.id.nodata_tip_tv)   TextView  noDataTipTV;
+    @ViewInject(R.id.actionBar_ab)    BaseActionBar actionBar;
     private ArrayList<BookVO> bookDataList = null;
     private BookGridViewAdapter gridAdapter;
     private int deletePost;
@@ -62,7 +64,7 @@ public class MainActivity extends BaseActivity implements IActivity{
                     if (file.length() == 0){
                         showToast("该文件为空文件");
                     } else {
-                        DBManager.getInstance().updateBookById(item.id, item.lastPostion + "", System.currentTimeMillis() + "");
+                        DBManager.getInstance().updateBookById(item.id, item.lastPostion + "", System.currentTimeMillis() + "", item.recordState);
                         Bundle bd = new Bundle();
                         bd.putSerializable("itemVO", item);
                         openActivity(BookReadActivity.class, bd);
@@ -70,6 +72,12 @@ public class MainActivity extends BaseActivity implements IActivity{
 //                        itemVO = (ProductItemVO)intent.getExtras().getSerializable("item");
                     }
                 }
+            }
+        });
+        actionBar.setRightBtnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(FileHandlerActivity.class);
             }
         });
     }

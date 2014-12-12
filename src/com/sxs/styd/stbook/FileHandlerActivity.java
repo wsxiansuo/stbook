@@ -1,13 +1,28 @@
 package com.sxs.styd.stbook;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.RandomAccessFile;
+import java.io.UnsupportedEncodingException;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.http.util.EncodingUtils;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -23,7 +38,9 @@ import com.sxs.styd.stbook.adapter.FileListAdapter;
 import com.sxs.styd.stbook.base.BaseActivity;
 import com.sxs.styd.stbook.data.DBManager;
 import com.sxs.styd.stbook.util.MapUtil;
+import com.sxs.styd.stbook.util.TxtReadUtil;
 import com.sxs.styd.stbook.vo.BookVO;
+import com.sxs.styd.stbook.vo.SectionVO;
 /**.
  * 本地文件目录文件读写
  * @author user
@@ -31,6 +48,8 @@ import com.sxs.styd.stbook.vo.BookVO;
  */
 public class FileHandlerActivity extends BaseActivity {
     private static final int  STR_LEN = 4;
+    private static final String CHAPTER_TAG = "\\u7b2c[\\s\\d\\u96f6\\u4e00\\u4e8c\\u4e09\\u56db\\u4e94\\u516d\\u4e03\\u516b\\u4e5d\\u5341\\u767e\\u5343\\u4e07]{1,10}[\\u7ae0\\u5377\\u56de\\u8bdd\\u8282\\u96c6]";
+    private static String CHAPTERPATTER ="(" + CHAPTER_TAG + "$" + ")" + "|" + "(" + CHAPTER_TAG + ".*?[^,.;?!，。、；：？！]$"+")";
     private ArrayList<Map<String, String>> listData = null; //存放显示的名称
     private String       rootPath = "/"; //起始目录
     private String       lastPath = "";
@@ -168,19 +187,54 @@ public class FileHandlerActivity extends BaseActivity {
      */
     @OnClick(R.id.insert_to_sql_btn)
     public void insertBtnClick(View v){
-        if (selectList != null && selectList.size() > 0){
-            ArrayList<BookVO> bookList = DBManager.getInstance().getBookList();
-            for (int i = 0; i < selectList.size(); i++){
-                Map<String, String> map = selectList.get(i);
-                String name = MapUtil.getString(map, FileListAdapter.MAP_NAME);
-                boolean isExist = getDataExist(bookList, name);
-                if (!isExist){
-                    DBManager.getInstance().insertBookToDB(name.substring(0, name.length() - STR_LEN), 
-                        MapUtil.getString(map, FileListAdapter.MAP_PATH), "", "0", System.currentTimeMillis()+"");
+        showLoading();
+        new Thread(new MyThread()).start();
+    }
+    private void readBookTxt(BookVO bookItem){
+        String content = ""; //文件内容字符串
+        File file = new File(bookItem.path); //打开文件
+        if (file.isDirectory()){ //如果path是传递过来的参数，可以做一个非目录的判断
+            return;
+        } 
+        try {
+            InputStream instream = new FileInputStream(file); 
+            if (instream != null){
+                int length = instream.available();  
+                byte[] buffer = new byte[length];  
+                instream.read(buffer);  
+                content = EncodingUtils.getString(buffer, TxtReadUtil.STR_CHAREST_NAME);  
+                instream.close();
+                Log.i(TAG, content.length() + "");
+                String[] arr = content.split("\r\n");
+                Pattern pat = Pattern.compile(CHAPTERPATTER);  
+                int splitLen = "\r\n".getBytes(TxtReadUtil.STR_CHAREST_NAME).length;
+                int postion = 0;
+                String word;
+                if (arr != null && arr.length > 0){
+                    int len = arr.length;
+                    for (int i = 0; i < len; i++){
+                        word = arr[i];
+                        Matcher mat = pat.matcher(word);
+                        if (mat.find()){
+                            Log.i(TAG, postion + word);
+                            SectionVO item = new SectionVO();
+                            item.bookId = bookItem.id;
+                            item.name = word.length() > 15 ? word.substring(0, 15) : word;
+                            item.postion = postion;
+                            DBManager.getInstance().insertSectionToDB(item);
+                        }
+                        postion += splitLen + word.getBytes(TxtReadUtil.STR_CHAREST_NAME).length;
+                    }
                 }
             }
+        } catch (java.io.FileNotFoundException e) {
+            Log.d("TestFile", "The File doesn't not exist.");
+        } catch (IOException e) {
+            Log.d("TestFile", e.getMessage());
         }
+        
     }
+    
     /**.
      * 判断重复处理
      * @param bookList 书列表
@@ -213,7 +267,41 @@ public class FileHandlerActivity extends BaseActivity {
         }
     };
     
-    
-    
-    
+    private void insertBook(){
+        if (selectList != null && selectList.size() > 0){
+            ArrayList<BookVO> bookList = DBManager.getInstance().getBookList();
+            for (int i = 0; i < selectList.size(); i++){
+                Map<String, String> map = selectList.get(i);
+                String name = MapUtil.getString(map, FileListAdapter.MAP_NAME);
+                boolean isExist = getDataExist(bookList, name);
+                if (!isExist){
+                    DBManager.getInstance().insertBookToDB(name.substring(0, name.length() - STR_LEN), 
+                        MapUtil.getString(map, FileListAdapter.MAP_PATH), "", "0", System.currentTimeMillis()+"", "0");
+                }
+            }
+        }
+    }
+    private void insertSection(){
+        ArrayList<BookVO> noStateList = DBManager.getInstance().getBookListByState();
+        if (noStateList != null && noStateList.size() > 0){
+            int count = noStateList.size();
+            for (int j = 0; j < count; j++){
+                BookVO item = noStateList.get(j);
+                readBookTxt(item);
+                DBManager.getInstance().updateBookById(item.id, item.lastPostion + "", item.lastTime + "", "1");
+            }
+        }
+    }
+    /**
+     *  多线程执行
+     * @author user
+     */
+    public class MyThread implements Runnable {
+        @Override
+        public void run() {
+            insertBook();
+            insertSection();
+            hideLoading();
+        }
+    }
 }

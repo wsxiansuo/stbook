@@ -20,4 +20,5 @@
     <string name="nodata_tip">暂无书籍,点我加载本地电子书</string>
     <string name="str_system_text">使用系统亮度</string>
     <string name="str_silder_text">滑屏亮度调节</string>
+    <string name="tip_loading">安全加载中</string>
 </resources>

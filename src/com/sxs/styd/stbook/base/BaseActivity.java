@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.sxs.styd.stbook.R;
+import com.sxs.styd.stbook.component.Loading;
+
 /**.
  * 基础类
  * @author user
@@ -62,12 +65,12 @@ public class BaseActivity extends Activity {
      * @param pBundle bundle
      */
     protected void openActivity(Class<?> pClass, Bundle pBundle) {
-          Intent intent = new Intent(this, pClass);
-          if (pBundle != null) {
-              intent.putExtras(pBundle);
-          }
-          intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-          startActivity(intent);
+        Intent intent = new Intent(this, pClass);
+        if (pBundle != null) {
+            intent.putExtras(pBundle);
+        }
+        intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        startActivity(intent);
     }
 
     /**.
@@ -85,11 +88,11 @@ public class BaseActivity extends Activity {
      * @param pBundle 数据
      */
     protected void openActivity(String pAction, Bundle pBundle) {
-          Intent intent = new Intent(pAction);
-          if (pBundle != null) {
-              intent.putExtras(pBundle);
-          }
-          startActivity(intent);
+        Intent intent = new Intent(pAction);
+        if (pBundle != null) {
+            intent.putExtras(pBundle);
+        }
+        startActivity(intent);
     }
     /**.
      * 显示toast信息
@@ -97,6 +100,17 @@ public class BaseActivity extends Activity {
      */
     protected void showToast(String text){
         Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+    }
+    
+    protected void showLoading(){
+        Activity activity = this;
+        while (activity.getParent() != null) {
+            activity = activity.getParent();  
+        }
+        Loading.show(activity, activity.getResources().getString(R.string.tip_loading));
+    }
+    protected void hideLoading(){
+        Loading.dismiss();
     }
     
 }

@@ -3,7 +3,6 @@ package com.sxs.styd.stbook;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -11,6 +10,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -19,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
@@ -40,17 +43,18 @@ import com.sxs.styd.stbook.component.PageWidget;
 import com.sxs.styd.stbook.config.Constants;
 import com.sxs.styd.stbook.data.DBManager;
 import com.sxs.styd.stbook.vo.BookVO;
+import com.sxs.styd.stbook.vo.SectionVO;
 import com.sxs.styd.stbook.vo.SettingVO;
 /**
  * 阅读类
  * @author user
  *
  */
-public class BookReadActivity extends BaseActivity{
-    
+public class BookReadActivity extends BaseActivity implements OnSeekBarChangeListener{
+    private static final float COLOR_MAX = 255.0f;
+    private static final int VALUE_CHU = 10;
     @ViewInject(R.id.rl_read_layout)  RelativeLayout  rlLayout;
     private BookVO        currItem;
-    private Context mContext;
     
     private int defaultSize = 0;
     private int readHeight = 0; //电子书显示高度
@@ -67,7 +71,6 @@ public class BookReadActivity extends BaseActivity{
     private int size;
     private int light;
     private boolean isNight;
-    private LayoutParams lp;
     private boolean isFirstMove;
     
     public String word;
@@ -140,9 +143,6 @@ public class BookReadActivity extends BaseActivity{
         getSize();
         getLight();
         //count = sp.getLong(bookPath + "count", 1);
-        lp = getWindow().getAttributes();
-        lp.screenBrightness = light / 10.0f < 0.01f ? 0.01f :light / 10.0f;
-        getWindow().setAttributes(lp);
         pageFactory = new BookPageFactory(Constants.SCREEN_WIDTH, readHeight); //书工厂
         if (isNight){
             pageFactory.setBgBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.main_bg));
@@ -203,11 +203,30 @@ public class BookReadActivity extends BaseActivity{
         mPopupView = LayoutInflater.from(this).inflate(R.layout.pop_style_setting_layout, null);
         mPopupWindow = new PopupWindow(mPopupView, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         mPopupWindow.setFocusable(true);
+        mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
         settingGV = (GridView) mPopupView.findViewById(R.id.book_setting);
         settingGV.setAdapter(settingAdapter);
         settingGV.setOnItemClickListener(adapterClickListener);
         settingAdapter.notifyDataSetChanged();
         layout = (LinearLayout) mPopupView.findViewById(R.id.book_pop);
+        layout.setOnKeyListener(new OnKeyListener() {  
+            @Override  
+            public boolean onKey(View v, int keyCode, KeyEvent event) {  
+                if (event.getAction() == KeyEvent.ACTION_DOWN) {  
+                    switch(keyCode) {
+                        case KeyEvent.KEYCODE_BACK:  
+                            backEventHandler();  
+                            break;  
+                        case KeyEvent.KEYCODE_MENU:  
+                            menuEventHandler();  
+                            break;
+                        default:
+                            break;
+                    }  
+                }  
+                return true;  
+            }  
+        });  
     }
     private AdapterView.OnItemClickListener adapterClickListener = new AdapterView.OnItemClickListener() {
         @Override
@@ -218,7 +237,7 @@ public class BookReadActivity extends BaseActivity{
                     lightSetting();
                     break;
                 case 1:
-                    rollSetting();
+                    menuSetting();
                     break;
                 case 2:
                     jumpSetting();
@@ -272,40 +291,24 @@ public class BookReadActivity extends BaseActivity{
                     } else {
                         editor.putBoolean(Constants.USE_SYSTEM_LIGHT, false);
                         seekBar.setEnabled(true);
-                        
+                        setScreenBrightness(sp.getInt(Constants.LIGHT, Constants.SCREEN_LIGHT));
                     }
                     editor.commit();
                 }
             };
             systemRL.setOnClickListener(clickListener);
-            seekBar.setProgress((int)(Constants.SCREEN_LIGHT / 255.0f * 100));
-            seekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {
-                    showToast(seekBar.getProgress() + "%");
-                }
-                
-                @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {
-                }
-                
-                @Override
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    if (fromUser){
-                        int value = (int)(255 * (progress < 10 ? 10 : progress) * 0.01f);
-                        editor.putInt(Constants.LIGHT, value);
-                        editor.commit();
-                        setScreenBrightness(value);
-                    }
-                }
-            });
+            seekBar.setProgress((int)(Constants.SCREEN_LIGHT / COLOR_MAX * 100));
+            seekBar.setOnSeekBarChangeListener(this);
             
         }
         mPopLightWindow.showAtLocation(mPageWidget, Gravity.BOTTOM, 0, 0);
     }
     //滚屏设置
-    private void rollSetting(){
-      
+    private void menuSetting(){
+        ArrayList<SectionVO> sectionList = DBManager.getInstance().getSectionList(currItem.id);
+        if (sectionList != null && sectionList.size() > 0){
+            
+        }
     }
     //跳转设置
     private void jumpSetting(){
@@ -359,7 +362,12 @@ public class BookReadActivity extends BaseActivity{
      * 读取配置文件中亮度值
      */
     private void getLight(){
-        light = sp.getInt("light", 5);
+        if (sp.getBoolean(Constants.USE_SYSTEM_LIGHT, false)){
+            light = Constants.SCREEN_LIGHT;
+        } else {
+            light = sp.getInt(Constants.LIGHT, Constants.SCREEN_LIGHT);
+        }
+        setScreenBrightness(light);
         isNight = sp.getBoolean("night", false);
     }
     /**
@@ -393,7 +401,7 @@ public class BookReadActivity extends BaseActivity{
     private void setScreenBrightness(int paramInt){
         Window localWindow = getWindow();
         WindowManager.LayoutParams localLayoutParams = localWindow.getAttributes();
-        float f = paramInt / 255.0f;
+        float f = paramInt / COLOR_MAX;
         localLayoutParams.screenBrightness = f;
         localWindow.setAttributes(localLayoutParams);
     }
@@ -404,13 +412,7 @@ public class BookReadActivity extends BaseActivity{
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK){
-            if (show){
-                show = false;
-                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-                clearPopWindow();
-            } else {
-                finish();
-            }
+            backEventHandler();
         }
         return true;
     }
@@ -420,14 +422,26 @@ public class BookReadActivity extends BaseActivity{
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_MENU){
-            if (show){
-                clearPopWindow();
-            } else {
-                pop();
-            }
-            show = !show;
+            menuEventHandler();
         }
         return super.onKeyUp(keyCode, event);
+    }
+    private void menuEventHandler(){
+        if (show){
+            clearPopWindow();
+        } else {
+            pop();
+        }
+        show = !show;
+    }
+    private void backEventHandler(){
+        if (show){
+            show = false;
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+            clearPopWindow();
+        } else {
+            finish();
+        }
     }
     /* (non-Javadoc)
      * @see com.sxs.styd.stbook.base.BaseActivity#onResume()
@@ -450,7 +464,7 @@ public class BookReadActivity extends BaseActivity{
     protected void onPause() {
         super.onPause();
         if (currItem != null){ //当页面暂停或需要销毁时 执行此方法 更新到数据库
-            DBManager.getInstance().updateBookById(currItem.id, begin+"", System.currentTimeMillis() + "");
+            DBManager.getInstance().updateBookById(currItem.id, begin+"", System.currentTimeMillis() + "", currItem.recordState);
         }
     }
     /* (non-Javadoc)
@@ -463,6 +477,29 @@ public class BookReadActivity extends BaseActivity{
         mPageWidget = null;
         
         finish();
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        if (!fromUser) {
+            return;
+        }
+        if (seekBar.getId() == R.id.sb_light_silder){
+            int value = (int)(COLOR_MAX * (progress < VALUE_CHU ? VALUE_CHU : progress) * 0.01f);
+            editor.putInt(Constants.LIGHT, value);
+            editor.commit();
+            setScreenBrightness(value);
+        }
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+      
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+        showToast(seekBar.getProgress() + "%");
     }
     
 }
